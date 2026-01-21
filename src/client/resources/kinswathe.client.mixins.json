@@ -1,0 +1,31 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.BsXinQin.kinswathe.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "gui.StaminaBarMixin",
+    "host.CustomWinnerAnnouncementMixin",
+    "host.CustomWinnerTextMixin",
+    "host.InstinctMixin",
+    "noellesroles.roles.bartender.BartenderShopMixin",
+    "roles.bellringer.BellringerHudMixin",
+    "roles.cleaner.CleanerHudMixin",
+    "roles.detective.DetectiveHudMixin",
+    "roles.licensed_villain.LicensedVillainShopMixin",
+    "roles.robot.RobotHudMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "mixins": [
+    "gui.IncomeIconMixin",
+    "host.UnlockDistanceMixin",
+    "roles.detective.DetectiveTargetHudMixin",
+    "roles.licensed_villain.LicensedVillainMoodMixin",
+    "roles.robot.RobotMoodMixin"
+  ]
+}

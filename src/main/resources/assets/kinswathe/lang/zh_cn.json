@@ -1,0 +1,33 @@
+{
+  "key.kinswathe.ability": "能力",
+  "tip.kinswathe.cooldown": "能力在 %s 秒后可用",
+  "tip.kinswathe.ability_can_use": "按下 %s 键发动能力",
+
+  "announcement.role.kinswathe.bellringer": "敲钟人",
+  "announcement.goals.kinswathe.bellringer": "查看时间，并修改时间。",
+  "tip.kinswathe.bellringer.not_enough_money": "需要 200§f\uE781§r 发动能力",
+
+  "announcement.role.kinswathe.robot": "机器人",
+  "announcement.goals.kinswathe.robot": "毫无感情可言的机器。",
+
+  "announcement.role.kinswathe.detective": "侦探",
+  "announcement.goals.kinswathe.detective": "调查出一切！",
+  "tip.kinswathe.detective.not_enough_money": "需要 200§f\uE781§r 发动能力",
+  "tip.kinswathe.detective.innocent": "%s 是平民",
+  "tip.kinswathe.detective.notinnocent": "%s 不是平民",
+  "hud.kinswathe.detective.target": "按下 %s 键调查该目标身份",
+
+  "announcement.role.kinswathe.cleaner": "清道夫",
+  "announcement.goals.kinswathe.cleaner": "扫除一切障碍！",
+  "tip.kinswathe.cleaner.not_enough_money": "需要 200§f\uE781§r 发动能力",
+
+  "announcement.role.kinswathe.licensed_villain": "执照恶棍",
+  "announcement.goals.kinswathe.licensed_villain": "你或许还尚存有一丝良知...",
+  "announcement.win.kinswathe.licensed_villain": "执照恶棍胜利！",
+  "game.win.kinswathe.licensed_villain": "执照恶棍终结了所有人的生命！",
+
+  "announcement.modifier.kinswathe.taskmaster": "任务大师",
+
+  "item.kinswathe.sulfuric_acid_barrel": "硫酸桶",
+  "item.kinswathe.sulfuric_acid_barrel.tooltip": "用于尸体，可将其溶解移除\n冷却 1 分钟"
+}

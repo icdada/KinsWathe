@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "kinswathe",
+  "version": "${version}",
+  "name": "KinsWathe",
+  "description": "Make wathe better!",
+  "authors": ["Bsxin"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/kinswathe/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "org.BsXinQin.kinswathe.client.KinsWatheDataGenerator"
+    ],
+    "client": [
+      "org.BsXinQin.kinswathe.client.KinsWatheClient"
+    ],
+    "main": [
+      "org.BsXinQin.kinswathe.KinsWathe"
+    ],
+    "cardinal-components": [
+      "org.BsXinQin.kinswathe.KinsWatheComponents"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "kinswathe:ability",
+      "kinswathe:config",
+      "kinswathe:custom_winner",
+      "kinswathe:body_death_reason"
+    ]
+  },
+  "mixins": [
+    "kinswathe.mixins.json",
+    {
+      "config": "kinswathe.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "harpymodloader": "*"
+  }
+}

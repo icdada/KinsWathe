@@ -1,0 +1,33 @@
+{
+  "key.kinswathe.ability": "Ability",
+  "tip.kinswathe.cooldown": "Ability usable in %ss",
+  "tip.kinswathe.ability_can_use": "Use %s to activate ability",
+
+  "announcement.role.kinswathe.bellringer": "Bellringer",
+  "announcement.goals.kinswathe.bellringer": "Check time, and modify time.",
+  "tip.kinswathe.bellringer.not_enough_money": "100§f\uE781§r required to activate ability",
+
+  "announcement.role.kinswathe.robot": "Robot",
+  "announcement.goals.kinswathe.robot": "A machine devoid of any emotion.",
+
+  "announcement.role.kinswathe.detective": "Detective",
+  "announcement.goals.kinswathe.detective": "Investigate everything!",
+  "tip.kinswathe.detective.not_enough_money": "200§f\uE781§r required to activate ability",
+  "tip.kinswathe.detective.innocent": "%s is innocent",
+  "tip.kinswathe.detective.notinnocent": "%s is not innocent",
+  "hud.kinswathe.detective.target": "Use %s to investigate",
+
+  "announcement.role.kinswathe.cleaner": "Cleaner",
+  "announcement.goals.kinswathe.cleaner": "Remove all obstacles!",
+  "tip.kinswathe.cleaner.not_enough_money": "200§f\uE781§r required to activate ability",
+
+  "announcement.role.kinswathe.licensed_villain": "Licensed Villain",
+  "announcement.goals.kinswathe.licensed_villain": "You might still retain a shred of conscience...",
+  "announcement.win.kinswathe.licensed_villain": "Licensed Villain Win!",
+  "game.win.kinswathe.licensed_villain": "The licensed villain ended everyone's life!",
+
+  "announcement.modifier.kinswathe.taskmaster": "Taskmaster",
+
+  "item.kinswathe.sulfuric_acid_barrel": "Sulfuric Acid Barrel",
+  "item.kinswathe.sulfuric_acid_barrel.tooltip": "Use on a dead body to dissolve it\n1 minute cooldown"
+}
