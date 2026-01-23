@@ -48,7 +48,7 @@
 
 - Cook
   - Can purchase food in shop
-  - See people who eat through walls temporarily.
+  - See people who eat through walls temporarily
 
 - Detective
   - Use ability to check whether someone is innocent
