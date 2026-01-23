@@ -9,6 +9,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.BsXinQin.kinswathe.KinsWathe;
+import org.BsXinQin.kinswathe.roles.cook.CookPlayerEatComponent;
 import org.agmas.noellesroles.Noellesroles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,10 +39,22 @@ public abstract class InstinctMixin {
     private static void InstinctColor(Entity target, CallbackInfoReturnable<Integer> ci) {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(MinecraftClient.getInstance().player.getWorld());
         if (target instanceof PlayerEntity) {
-            if (gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.LICENSED_VILLAIN) && WatheClient.isInstinctEnabled()) {
-                ci.setReturnValue(KinsWathe.LICENSED_VILLAIN.color());
-                ci.cancel();
+            //厨师透视
+            if (!target.isSpectator()) {
+                CookPlayerEatComponent playerEat = CookPlayerEatComponent.KEY.get(target);
+                if (gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.COOK) && playerEat.hasEaten()) {
+                    ci.setReturnValue(WatheRoles.CIVILIAN.color());
+                    ci.cancel();
+                }
             }
+            //执照恶棍透视
+            if (!target.isSpectator() && WatheClient.isInstinctEnabled()) {
+                if (gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.LICENSED_VILLAIN)) {
+                    ci.setReturnValue(KinsWathe.LICENSED_VILLAIN.color());
+                    ci.cancel();
+                }
+            }
+            //不同阵营透视效果
             if (!target.isSpectator() && WatheClient.isInstinctEnabled()) {
                 Role role = gameWorld.getRole((PlayerEntity) target);
                 if (role != null) {

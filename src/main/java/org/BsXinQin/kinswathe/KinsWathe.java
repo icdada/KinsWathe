@@ -28,7 +28,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import org.BsXinQin.kinswathe.component.AbilityPlayerComponent;
-import org.BsXinQin.kinswathe.modifiers.taskmaster.RolesHaveIncome;
+import org.BsXinQin.kinswathe.component.RolesHaveIncomeComponent;
 import org.agmas.harpymodloader.Harpymodloader;
 import org.agmas.harpymodloader.events.ModdedRoleAssigned;
 import org.BsXinQin.kinswathe.packet.*;
@@ -38,7 +38,6 @@ import org.agmas.noellesroles.Noellesroles;
 import org.agmas.noellesroles.recaller.RecallerPlayerComponent;
 
 import java.util.*;
-import java.util.List;
 
 public class KinsWathe implements ModInitializer {
 
@@ -55,8 +54,9 @@ public class KinsWathe implements ModInitializer {
     //定义身份
     //平民
     public static Identifier BELLRINGER_ID = Identifier.of(MOD_ID, "bellringer");
-    public static Identifier ROBOT_ID = Identifier.of(MOD_ID, "robot");
+    public static Identifier COOK_ID = Identifier.of(MOD_ID, "cook");
     public static Identifier DETECTIVE_ID = Identifier.of(MOD_ID, "detective");
+    public static Identifier ROBOT_ID = Identifier.of(MOD_ID, "robot");
     //杀手
     public static Identifier CLEANER_ID = Identifier.of(MOD_ID, "cleaner");
     //中立
@@ -76,14 +76,14 @@ public class KinsWathe implements ModInitializer {
             WatheRoles.CIVILIAN.getMaxSprintTime(),
             true
     ));
-    //机器人
-    public static Role ROBOT = WatheRoles.registerRole(new Role(
-            ROBOT_ID,
-            0xC0C0C0,
+    //厨师
+    public static Role COOK = WatheRoles.registerRole(new Role(
+            COOK_ID,
+            0xCCFF99,
             true,
             false,
-            Role.MoodType.FAKE,
-            -1,
+            Role.MoodType.REAL,
+            WatheRoles.CIVILIAN.getMaxSprintTime(),
             false
     ));
     //侦探
@@ -94,6 +94,16 @@ public class KinsWathe implements ModInitializer {
             false,
             Role.MoodType.REAL,
             WatheRoles.CIVILIAN.getMaxSprintTime(),
+            false
+    ));
+    //机器人
+    public static Role ROBOT = WatheRoles.registerRole(new Role(
+            ROBOT_ID,
+            0xC0C0C0,
+            true,
+            false,
+            Role.MoodType.FAKE,
+            -1,
             false
     ));
     //杀手
@@ -124,131 +134,16 @@ public class KinsWathe implements ModInitializer {
             TASKMASTER_ID,
             0xFF3399,
             null,
-            new ArrayList<>(RolesHaveIncome.getRoles()),
+            new ArrayList<>(RolesHaveIncomeComponent.getRoles()),
             false,
             false
     ));
 
-    //修改NoellesRoles身份词条
-    public static void registerNoellesRoles() {
-        if (!NOELLESROLES_LOADED) return;
-        try {Class<?> noellesClass = Class.forName("org.agmas.noellesroles.Noellesroles");
-            //修改小丑
-            Role JESTER = new Role(
-                    Noellesroles.JESTER_ID,
-                    0xFF56F3,
-                    false,
-                    false,
-                    Role.MoodType.FAKE,
-                    -1,
-                    true
-            );
-            for (int i = 0; i < WatheRoles.ROLES.size(); i++) {
-                if (WatheRoles.ROLES.get(i).identifier().equals(Noellesroles.JESTER_ID)) {
-                    WatheRoles.ROLES.set(i, JESTER);break;}}
-            java.lang.reflect.Field JESTER_Field = noellesClass.getDeclaredField("JESTER");
-            JESTER_Field.setAccessible(true);
-            JESTER_Field.set(null, JESTER);
-            //修改变形怪
-            Role MORPHLING = new Role(
-                    Noellesroles.MORPHLING_ID,
-                    0xAA023D,
-                    false,
-                    true,
-                    Role.MoodType.FAKE,
-                    -1,
-                    true
-            );
-            for (int i = 0; i < WatheRoles.ROLES.size(); i++) {
-                if (WatheRoles.ROLES.get(i).identifier().equals(Noellesroles.MORPHLING_ID)) {
-                    WatheRoles.ROLES.set(i, MORPHLING);break;}}
-            java.lang.reflect.Field MORPHLING_Field = noellesClass.getDeclaredField("MORPHLING");
-            MORPHLING_Field.setAccessible(true);
-            MORPHLING_Field.set(null, MORPHLING);
-            //修改交换者
-            Role SWAPPER = new Role(
-                    Noellesroles.SWAPPER_ID,
-                    0x3904AA,
-                    false,
-                    true,
-                    Role.MoodType.FAKE,
-                    -1,
-                    true
-            );
-            for (int i = 0; i < WatheRoles.ROLES.size(); i++) {
-                if (WatheRoles.ROLES.get(i).identifier().equals(Noellesroles.SWAPPER_ID)) {
-                    WatheRoles.ROLES.set(i, SWAPPER);break;}}
-            java.lang.reflect.Field SWAPPER_Field = noellesClass.getDeclaredField("SWAPPER");
-            SWAPPER_Field.setAccessible(true);
-            SWAPPER_Field.set(null, SWAPPER);
-            //修改幻灵
-            Role PHANTOM = new Role(
-                    Noellesroles.PHANTOM_ID,
-                    0x500505,
-                    false,
-                    true,
-                    Role.MoodType.FAKE,
-                    -1,
-                    true
-            );
-            for (int i = 0; i < WatheRoles.ROLES.size(); i++) {
-                if (WatheRoles.ROLES.get(i).identifier().equals(Noellesroles.PHANTOM_ID)) {
-                    WatheRoles.ROLES.set(i, PHANTOM);break;}}
-            java.lang.reflect.Field PHANTOM_Field = noellesClass.getDeclaredField("PHANTOM");
-            PHANTOM_Field.setAccessible(true);
-            PHANTOM_Field.set(null, PHANTOM);
-            //修改亡语杀手
-            Role THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES = new Role(
-                    Noellesroles.THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES_ID,
-                    0xFF0000,
-                    false,
-                    true,
-                    Role.MoodType.FAKE,
-                    -1,
-                    true
-            );
-            for (int i = 0; i < WatheRoles.ROLES.size(); i++) {
-                if (WatheRoles.ROLES.get(i).identifier().equals(Noellesroles.THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES_ID)) {
-                    WatheRoles.ROLES.set(i, THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES);break;}}
-            java.lang.reflect.Field THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES_Field = noellesClass.getDeclaredField("THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES");
-            THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES_Field.setAccessible(true);
-            THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES_Field.set(null, THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES);
-            //修改小孩
-            Modifier TINY = new Modifier(
-                    Noellesroles.TINY_ID,
-                    0xFFA600,
-                    new ArrayList<>(List.of(MORPHLING)),
-                    null,
-                    false,
-                    false
-            );
-            for (int i = 0; i < HMLModifiers.MODIFIERS.size(); i++) {
-                if (HMLModifiers.MODIFIERS.get(i).identifier().equals(Noellesroles.TINY_ID)) {
-                    HMLModifiers.MODIFIERS.set(i, TINY);break;}}
-            java.lang.reflect.Field TINY_Field = noellesClass.getDeclaredField("TINY");
-            TINY_Field.setAccessible(true);
-            TINY_Field.set(null, TINY);
-            //修改猜测者
-            Modifier GUESSER = new Modifier(
-                    Noellesroles.GUESSER_ID,
-                    0x9E2B19,
-                    new ArrayList<>(List.of(THE_INSANE_DAMNED_PARANOID_KILLER_OF_DOOM_DEATH_DESTRUCTION_AND_WAFFLES)),
-                    null,
-                    true,
-                    false
-            );
-            for (int i = 0; i < HMLModifiers.MODIFIERS.size(); i++) {
-                if (HMLModifiers.MODIFIERS.get(i).identifier().equals(Noellesroles.GUESSER_ID)) {
-                    HMLModifiers.MODIFIERS.set(i, GUESSER);break;}}
-            java.lang.reflect.Field GUESSER_Field = noellesClass.getDeclaredField("GUESSER");
-            GUESSER_Field.setAccessible(true);
-            GUESSER_Field.set(null, GUESSER);
-        } catch (Exception ignored) {}
-    }
     /// 设置身份
     public static final ArrayList<Role> VANNILA_ROLES = new ArrayList<>();
     public static final ArrayList<Identifier> VANNILA_ROLE_IDS = new ArrayList<>();
     public static final ArrayList<Role> NEUTRAL_ROLES = new ArrayList<>();
+
     /// 设置网络数据包
     public static final CustomPayload.Id<AbilityC2SPacket> ABILITY_PACKET = AbilityC2SPacket.ID;
 
@@ -287,9 +182,6 @@ public class KinsWathe implements ModInitializer {
         //初始化事件与网络数据包
         registerEvents();
         registerPackets();
-
-        //重新注册NoellesRoles身份词条
-        registerNoellesRoles();
     }
 
     /// 注册身份id

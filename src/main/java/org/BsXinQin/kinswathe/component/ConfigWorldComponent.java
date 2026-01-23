@@ -15,18 +15,15 @@ public class ConfigWorldComponent implements AutoSyncedComponent, ServerTickingC
 
     public static final ComponentKey<ConfigWorldComponent> KEY = ComponentRegistry.getOrCreate(Identifier.of(KinsWathe.MOD_ID, "config"), ConfigWorldComponent.class);
     private final World world;
-    public void reset() {
-        this.sync();
-    }
-    public ConfigWorldComponent(World world) {
-        this.world = world;
-    }
+
+    public ConfigWorldComponent(World world) {this.world = world;}
     public void sync() {
         KEY.sync(this.world);
     }
+    public void reset() {this.sync();}
+
     public void writeToNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {}
     public void readFromNbt(@NotNull NbtCompound tag, RegistryWrapper.@NotNull WrapperLookup registryLookup) {}
-    @Override public void serverTick() {
-        this.sync();
-    }
+
+    @Override public void serverTick() {this.sync();}
 }

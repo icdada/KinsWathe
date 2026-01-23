@@ -28,7 +28,7 @@
       "kinswathe:ability",
       "kinswathe:config",
       "kinswathe:custom_winner",
-      "kinswathe:body_death_reason"
+      "kinswathe:cook"
     ]
   },
   "mixins": [

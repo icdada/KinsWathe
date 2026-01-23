@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(targets = "dev.doctor4t.wathe.util.GunShootPayload$Receiver")
+@Mixin(targets = "dev.doctor4t.wathe.util.GunShootPayload$Receiver", priority = 500)
 public class LicensedVillainNoBackfireMixin {
 
     @Inject(method = "lambda$receive$2", at = @At("HEAD"), remap = false, cancellable = true)

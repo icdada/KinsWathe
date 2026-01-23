@@ -46,6 +46,10 @@
   - Infinite stamina
   - Use ability to see the darkness clearly
 
+- Cook
+  - Can purchase food in shop
+  - See people who eat through walls temporarily.
+
 - Detective
   - Use ability to check whether someone is innocent
 

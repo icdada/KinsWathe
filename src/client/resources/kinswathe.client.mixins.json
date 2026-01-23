@@ -11,6 +11,7 @@
     "noellesroles.roles.bartender.BartenderShopMixin",
     "roles.bellringer.BellringerHudMixin",
     "roles.cleaner.CleanerHudMixin",
+    "roles.cook.CookShopMixin",
     "roles.detective.DetectiveHudMixin",
     "roles.licensed_villain.LicensedVillainShopMixin",
     "roles.robot.RobotHudMixin"

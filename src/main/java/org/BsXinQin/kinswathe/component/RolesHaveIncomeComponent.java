@@ -1,4 +1,4 @@
-package org.BsXinQin.kinswathe.modifiers.taskmaster;
+package org.BsXinQin.kinswathe.component;
 
 import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.api.WatheRoles;
@@ -10,13 +10,14 @@ import java.util.List;
 
 import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
 
-public class RolesHaveIncome {
+public class RolesHaveIncomeComponent {
 
     public static List<Role> getRoles() {
         List<Role> roles = new ArrayList<>();
         //添加基础身份
         roles.add(WatheRoles.KILLER);
         roles.add(KinsWathe.BELLRINGER);
+        roles.add(KinsWathe.COOK);
         roles.add(KinsWathe.DETECTIVE);
         roles.add(KinsWathe.CLEANER);
         roles.add(KinsWathe.LICENSED_VILLAIN);

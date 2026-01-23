@@ -41,7 +41,7 @@ public abstract class LicensedVillainShopMixin {
                         player.networkHandler.sendPacket(new PlaySoundS2CPacket(Registries.SOUND_EVENT.getEntry(WatheSounds.UI_SHOP_BUY), SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 1.0F, 0.9F + this.player.getRandom().nextFloat() * 0.2F, player.getRandom().nextLong()));
                     }
                 } else {
-                    this.player.sendMessage(Text.literal("Purchase Failed").formatted(Formatting.DARK_RED), true);
+                    this.player.sendMessage(Text.translatable("shop.purchase_failed").withColor(0xAA0000), true);
                     PlayerEntity var4 = this.player;
                     if (var4 instanceof ServerPlayerEntity) {
                         ServerPlayerEntity player = (ServerPlayerEntity) var4;

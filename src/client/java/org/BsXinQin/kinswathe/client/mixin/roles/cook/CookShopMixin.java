@@ -1,12 +1,12 @@
-package org.BsXinQin.kinswathe.client.mixin.roles.licensed_villain;
+package org.BsXinQin.kinswathe.client.mixin.roles.cook;
 
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.gui.screen.ingame.LimitedHandledScreen;
 import dev.doctor4t.wathe.client.gui.screen.ingame.LimitedInventoryScreen;
-import dev.doctor4t.wathe.index.WatheItems;
 import dev.doctor4t.wathe.util.ShopEntry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Items;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import org.BsXinQin.kinswathe.KinsWathe;
@@ -21,18 +21,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(LimitedInventoryScreen.class)
-public abstract class LicensedVillainShopMixin extends LimitedHandledScreen<PlayerScreenHandler> {
+public abstract class CookShopMixin extends LimitedHandledScreen<PlayerScreenHandler> {
 
     @Shadow @Final public ClientPlayerEntity player;
 
-    public LicensedVillainShopMixin(PlayerScreenHandler handler, PlayerInventory inventory, Text title) {super(handler, inventory, title);}
+    public CookShopMixin(PlayerScreenHandler handler, PlayerInventory inventory, Text title) {super(handler, inventory, title);}
 
     @Inject(method = "init", at = @At("HEAD"))
-    void LicensedVillainShop(CallbackInfo ci) {
+    void CookShop(CallbackInfo ci) {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
-        if (gameWorld.isRole(player, KinsWathe.LICENSED_VILLAIN)) {
+        if (gameWorld.isRole(player, KinsWathe.COOK)) {
             List<ShopEntry> entries = new ArrayList<>();
-            entries.add(new ShopEntry(WatheItems.REVOLVER.getDefaultStack(), 300, ShopEntry.Type.WEAPON));
+            entries.add(new ShopEntry(Items.COOKED_PORKCHOP.getDefaultStack(), 100, ShopEntry.Type.POISON));
+            entries.add(new ShopEntry(Items.COOKED_BEEF.getDefaultStack(), 100, ShopEntry.Type.POISON));
+            entries.add(new ShopEntry(Items.COOKED_CHICKEN.getDefaultStack(), 100, ShopEntry.Type.POISON));
             int apart = 36;
             int x = width / 2 - (entries.size()) * apart / 2 + 9;
             int shouldBeY = (((LimitedInventoryScreen)(Object)this).height - 32) / 2;

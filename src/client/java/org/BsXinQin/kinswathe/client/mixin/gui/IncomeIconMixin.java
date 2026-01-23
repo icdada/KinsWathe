@@ -24,6 +24,7 @@ public abstract class IncomeIconMixin {
     @Inject(method = "renderHud", at = @At("HEAD"))
     private static void IncomeIcon(TextRenderer renderer, ClientPlayerEntity player, DrawContext context, float delta, CallbackInfo ci) {
         if (GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.BELLRINGER)
+        ||  GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.COOK)
         ||  GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.DETECTIVE)
         ||  GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.LICENSED_VILLAIN)
         ) {
