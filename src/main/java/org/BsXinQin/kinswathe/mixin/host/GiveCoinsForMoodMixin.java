@@ -28,7 +28,7 @@ public abstract class GiveCoinsForMoodMixin {
             if (gameWorld.getRole(player) != null) {
                 if (gameWorld.getRole(player).getMoodType().equals(Role.MoodType.REAL)) {
                     PlayerShopComponent playerShop = PlayerShopComponent.KEY.get(player);
-                    playerShop.balance += 50;
+                    playerShop.addToBalance(50);
                 }
             }
         }

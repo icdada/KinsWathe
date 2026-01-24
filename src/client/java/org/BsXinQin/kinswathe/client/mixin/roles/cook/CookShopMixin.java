@@ -44,5 +44,4 @@ public abstract class CookShopMixin extends LimitedHandledScreen<PlayerScreenHan
             }
         }
     }
-
 }

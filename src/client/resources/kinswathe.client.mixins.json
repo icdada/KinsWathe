@@ -13,6 +13,7 @@
     "roles.cleaner.CleanerHudMixin",
     "roles.cook.CookShopMixin",
     "roles.detective.DetectiveHudMixin",
+    "roles.drugmaker.DrugmakerShopMixin",
     "roles.licensed_villain.LicensedVillainShopMixin",
     "roles.robot.RobotHudMixin"
   ],

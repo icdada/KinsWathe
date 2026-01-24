@@ -62,6 +62,11 @@
   - Sulfuric acid can can dissolve a body (cooldown 1 minute)
   - Use ability to clear field drops
 
+- Drugmaker
+  - Price of Poison Vial and Scorpion reduced by half
+  - Price of Knife doubles
+  - Can not purchase Psycho Mode
+
 
 ## New Neutrals
 

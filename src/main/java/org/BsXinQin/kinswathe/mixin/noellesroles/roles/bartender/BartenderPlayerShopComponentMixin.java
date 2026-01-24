@@ -9,7 +9,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.BsXinQin.kinswathe.KinsWatheConfig;
 import org.agmas.noellesroles.ModItems;
 import org.agmas.noellesroles.Noellesroles;
@@ -53,7 +52,7 @@ public abstract class BartenderPlayerShopComponentMixin {
                         ));
                     }
                 } else {
-                    this.player.sendMessage(Text.literal("Purchase Failed").formatted(Formatting.DARK_RED), true);
+                    this.player.sendMessage(Text.translatable("shop.purchase_failed").withColor(0xAA0000), true);
                     if (player instanceof ServerPlayerEntity serverPlayer) {
                         serverPlayer.networkHandler.sendPacket(new PlaySoundS2CPacket(
                                 Registries.SOUND_EVENT.getEntry(WatheSounds.UI_SHOP_BUY_FAIL),

@@ -59,6 +59,7 @@ public class KinsWathe implements ModInitializer {
     public static Identifier ROBOT_ID = Identifier.of(MOD_ID, "robot");
     //杀手
     public static Identifier CLEANER_ID = Identifier.of(MOD_ID, "cleaner");
+    public static Identifier DRUGMAKER_ID = Identifier.of(MOD_ID, "drugmaker");
     //中立
     public static Identifier LICENSED_VILLAIN_ID = Identifier.of(MOD_ID, "licensed_villain");
     //定义词条
@@ -111,6 +112,15 @@ public class KinsWathe implements ModInitializer {
     public static Role CLEANER = WatheRoles.registerRole(new Role(
             CLEANER_ID,
             0x16582C,
+            false,
+            true,
+            Role.MoodType.FAKE,
+            -1,
+            true
+    ));
+    public static Role DRUGMAKER = WatheRoles.registerRole(new Role(
+            DRUGMAKER_ID,
+            0x4C0099,
             false,
             true,
             Role.MoodType.FAKE,

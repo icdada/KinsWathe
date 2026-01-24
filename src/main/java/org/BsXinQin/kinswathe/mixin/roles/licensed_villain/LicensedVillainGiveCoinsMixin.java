@@ -25,7 +25,7 @@ public abstract class LicensedVillainGiveCoinsMixin {
             if (gameWorld.getRole(player) != null) {
                 if (gameWorld.isRole(player, KinsWathe.LICENSED_VILLAIN)) {
                     PlayerShopComponent playerShop = PlayerShopComponent.KEY.get(player);
-                    playerShop.balance += 50;
+                    playerShop.addToBalance(50);
                 }
             }
         }

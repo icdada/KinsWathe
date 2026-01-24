@@ -20,6 +20,7 @@ public class RolesHaveIncomeComponent {
         roles.add(KinsWathe.COOK);
         roles.add(KinsWathe.DETECTIVE);
         roles.add(KinsWathe.CLEANER);
+        roles.add(KinsWathe.DRUGMAKER);
         roles.add(KinsWathe.LICENSED_VILLAIN);
         //添加NoellesRoles身份
         if (NOELLESROLES_LOADED) {

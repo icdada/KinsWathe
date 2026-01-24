@@ -35,8 +35,8 @@ public abstract class TaskmasterGiveCoinsMixin {
                     if (!gameWorld.isInnocent(player) &&
                         !KinsWathe.NEUTRAL_ROLES.contains(role) &&
                         !(NOELLESROLES_LOADED && Noellesroles.KILLER_SIDED_NEUTRALS.contains(role))) {
-                        playerShop.balance +=50;} else{
-                        playerShop.balance +=25;
+                        playerShop.addToBalance(50);} else{
+                        playerShop.addToBalance(25);
                     }
                 }
             }

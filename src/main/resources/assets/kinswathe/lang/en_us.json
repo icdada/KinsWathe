@@ -24,6 +24,9 @@
   "announcement.goals.kinswathe.cleaner": "Remove all obstacles!",
   "tip.kinswathe.cleaner.not_enough_money": "200§f\uE781§r required to activate ability",
 
+  "announcement.role.kinswathe.drugmaker": "Drugmaker",
+  "announcement.goals.kinswathe.drugmaker": "Conquer everyone with poison!",
+
   "announcement.role.kinswathe.licensed_villain": "Licensed Villain",
   "announcement.goals.kinswathe.licensed_villain": "You might still retain a shred of conscience...",
   "announcement.win.kinswathe.licensed_villain": "Licensed Villain Win!",

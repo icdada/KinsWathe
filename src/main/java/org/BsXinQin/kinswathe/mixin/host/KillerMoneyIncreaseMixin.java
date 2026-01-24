@@ -22,7 +22,7 @@ public class KillerMoneyIncreaseMixin {
             GameWorldComponent gameWorld = GameWorldComponent.KEY.get(victim.getWorld());
             if (!gameWorld.isInnocent(player)) {
                 PlayerShopComponent playerShop = PlayerShopComponent.KEY.get(player);
-                playerShop.balance += 100;
+                playerShop.addToBalance(100);
             }
         }
     }

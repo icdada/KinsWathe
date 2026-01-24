@@ -3,7 +3,6 @@ package org.BsXinQin.kinswathe.client.mixin.noellesroles.roles.bartender;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.gui.screen.ingame.LimitedHandledScreen;
 import dev.doctor4t.wathe.client.gui.screen.ingame.LimitedInventoryScreen;
-import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.util.ShopEntry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -38,6 +37,7 @@ public abstract class BartenderShopMixin extends LimitedHandledScreen<PlayerScre
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         if (gameWorld.isRole(player,Noellesroles.BARTENDER)) {
             ci.cancel();
+            super.init();
 
             List<ShopEntry> entries = new ArrayList<>();
             entries.add(new ShopEntry(ModItems.DEFENSE_VIAL.getDefaultStack(), KinsWatheConfig.BartenderPriceModify, ShopEntry.Type.POISON));
@@ -47,16 +47,6 @@ public abstract class BartenderShopMixin extends LimitedHandledScreen<PlayerScre
             int y = shouldBeY - 46;
             for(int i = 0; i < entries.size(); ++i) {
                 addDrawableChild(new LimitedInventoryScreen.StoreItemWidget((LimitedInventoryScreen)(Object)this, x + apart * i, y, entries.get(i), i));
-            }
-
-            super.init();
-            if (!GameWorldComponent.KEY.get(this.player.getWorld()).canUseKillerFeatures(player)) return;
-            List<ShopEntry> entriesOriginal = GameConstants.SHOP_ENTRIES;
-            int apartOriginal = 38;
-            int xOriginal = this.width / 2 - entriesOriginal.size() * apartOriginal / 2 + 9;
-            int yOriginal = this.y - 46;
-            for (int i = 0; i < entriesOriginal.size(); i++) {
-                this.addDrawableChild(new LimitedInventoryScreen.StoreItemWidget((LimitedInventoryScreen)(Object)this, xOriginal + apartOriginal * i, yOriginal, entriesOriginal.get(i), i));
             }
         }
     }
