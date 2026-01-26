@@ -33,8 +33,6 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
-
 public class KinsWatheClient implements ClientModInitializer {
 
     public static int insanityTime = 0;
@@ -46,14 +44,12 @@ public class KinsWatheClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            /// 设置技能按键
-            if (NOELLESROLES_LOADED) {
-                abilityBind = NoellesrolesClient.abilityBind;
-            } else {
-                abilityBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + KinsWathe.MOD_ID + ".ability", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G, "category.wathe.keybinds"));
-            }
-        });
+        /// 设置技能按键
+        if (!KinsWathe.NOELLESROLES_LOADED) {
+            abilityBind = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + KinsWathe.MOD_ID + ".ability", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G, "category.wathe.keybinds"));
+        } else {
+            ClientTickEvents.START_CLIENT_TICK.register(client -> {abilityBind = NoellesrolesClient.abilityBind;});
+        }
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (abilityBind.isPressed()) {
                 PacketByteBuf data = PacketByteBufs.create();
@@ -63,7 +59,7 @@ public class KinsWatheClient implements ClientModInitializer {
                     ClientPlayNetworking.send(new AbilityC2SPacket());
                 });
             }
-            if (!NOELLESROLES_LOADED) {
+            if (!KinsWathe.NOELLESROLES_LOADED) {
                 insanityTime++;
                 if (insanityTime >= 20 * 6) {
                     insanityTime = 0;
@@ -78,6 +74,15 @@ public class KinsWatheClient implements ClientModInitializer {
                 }
             }
         });
+        /// 同步客户端Config
+        ClientPlayNetworking.registerGlobalReceiver(KinsWathe.CONFIG_SYNC_PACKET,
+                (payload, context) -> {
+                    KinsWathe.CLIENT_INT_CONFIGS.clear();
+                    KinsWathe.CLIENT_BOOL_CONFIGS.clear();
+                    KinsWathe.CLIENT_INT_CONFIGS.putAll(payload.intConfigs());
+                    KinsWathe.CLIENT_BOOL_CONFIGS.putAll(payload.boolConfigs());
+                }
+        );
 
         /// 初始化物品冷却提示
         ItemCooldownComponent.initItemCooldown();
@@ -85,7 +90,7 @@ public class KinsWatheClient implements ClientModInitializer {
         /// 添加物品描述和冷却提示
         ItemTooltipCallback.EVENT.register(((itemStack, tooltipContext, tooltipType, list) -> {
             //添加NoellreRoles物品冷却提示
-            if (NOELLESROLES_LOADED) {
+            if (KinsWathe.NOELLESROLES_LOADED) {
                 CooldownText(ModItems.FAKE_REVOLVER, list, itemStack);
             }
             //添加物品提示

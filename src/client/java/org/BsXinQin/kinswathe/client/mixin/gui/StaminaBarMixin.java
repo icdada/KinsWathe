@@ -2,6 +2,7 @@ package org.BsXinQin.kinswathe.client.mixin.gui;
 
 import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
+import dev.doctor4t.wathe.client.WatheClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -10,7 +11,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.BsXinQin.kinswathe.KinsWathe;
-import org.BsXinQin.kinswathe.KinsWatheConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,27 +24,26 @@ public abstract class StaminaBarMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     public void StaminaBar(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-        if (!KinsWatheConfig.EnableStaminaBar) return;
-        MinecraftClient client = MinecraftClient.getInstance();
-        PlayerEntity player = client.player;
-        GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
-        Role role = gameWorld.getRole(player);
-        if (player == null || client.options.hudHidden) return;
-        if (gameWorld == null || !gameWorld.isRunning()) return;
-        if (player.isCreative() || player.isSpectator()) return;
-        if (role == null) return;
-
-        int maxSprintTime = role.getMaxSprintTime();
-
-        if (maxSprintTime == -1) {
-            StaminaBarInfinite(context, 1.0f, 0xFF00FF00);} else {
-            try {
-                NbtCompound nbt = player.writeNbt(new NbtCompound());
-                if (nbt.contains("sprintingTicks")) {
-                    float stamina = nbt.getFloat("sprintingTicks");
-                    StaminaBarRequire(context, stamina, maxSprintTime);
+        if (!KinsWathe.EnableStaminaBar()) return;
+        if (WatheClient.isPlayerAliveAndInSurvival()) {
+            MinecraftClient client = MinecraftClient.getInstance();
+            PlayerEntity player = client.player;
+            GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
+            Role role = gameWorld.getRole(player);
+            if (!client.options.hudHidden && role != null) {
+                int maxSprintTime = role.getMaxSprintTime();
+                if (maxSprintTime == -1) {
+                    StaminaBarInfinite(context, 1.0f, 0xFF00FF00);
+                } else {
+                    try {
+                        NbtCompound nbt = player.writeNbt(new NbtCompound());
+                        if (nbt.contains("sprintingTicks")) {
+                            float stamina = nbt.getFloat("sprintingTicks");
+                            StaminaBarRequire(context, stamina, maxSprintTime);
+                        }
+                    } catch (Exception ignored) {}
                 }
-            } catch (Exception ignored) {}
+            }
         }
     }
 

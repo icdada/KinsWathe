@@ -32,26 +32,22 @@ public class DetectiveTargetHudMixin {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         AbilityPlayerComponent ability = AbilityPlayerComponent.KEY.get(MinecraftClient.getInstance().player);
         PlayerShopComponent playerShop = PlayerShopComponent.KEY.get(MinecraftClient.getInstance().player);
-        if (WatheClient.isPlayerSpectatingOrCreative() || !WatheClient.isPlayerAliveAndInSurvival()) return;
-        if (!gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DETECTIVE)) return;
-        if (ability.cooldown > 0 || playerShop.balance < 200) return;
-        if (DetectiveTarget != null && DetectiveTarget != player) {
-            context.getMatrices().push();
-            context.getMatrices().translate((float) context.getScaledWindowWidth() / 2.0F, (float) context.getScaledWindowHeight() / 2.0F + 6.0F, 0.0F);
-            context.getMatrices().scale(0.6F, 0.6F, 1.0F);
-            Text targetInfo = Text.translatable("hud.kinswathe.detective.target", KinsWatheClient.abilityBind.getBoundKeyLocalizedText()).withColor(KinsWathe.DETECTIVE.color());
-            context.drawTextWithShadow(renderer, targetInfo, -renderer.getWidth(targetInfo) / 2, 32, KinsWathe.DETECTIVE.color());
-            context.getMatrices().pop();
+        if (WatheClient.isPlayerAliveAndInSurvival()) {
+            if (!gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DETECTIVE)) return;
+            if (ability.cooldown > 0 || playerShop.balance < KinsWathe.DetectiveAbilityPrice()) return;
+            if (DetectiveTarget != null && DetectiveTarget != player) {
+                context.getMatrices().push();
+                context.getMatrices().translate((float) context.getScaledWindowWidth() / 2.0F, (float) context.getScaledWindowHeight() / 2.0F + 6.0F, 0.0F);
+                context.getMatrices().scale(0.6F, 0.6F, 1.0F);
+                Text targetInfo = Text.translatable("hud.kinswathe.detective.target", KinsWatheClient.abilityBind.getBoundKeyLocalizedText()).withColor(KinsWathe.DETECTIVE.color());
+                context.drawTextWithShadow(renderer, targetInfo, -renderer.getWidth(targetInfo) / 2, 32, KinsWathe.DETECTIVE.color());
+                context.getMatrices().pop();
+            }
         }
     }
 
     @Inject(method = "renderHud", at = @At(value = "INVOKE", target = "Ldev/doctor4t/wathe/game/GameFunctions;isPlayerSpectatingOrCreative(Lnet/minecraft/entity/player/PlayerEntity;)Z"))
-    private static void getDetectiveTarget(
-            TextRenderer renderer,
-            ClientPlayerEntity player,
-            DrawContext context,
-            RenderTickCounter tickCounter,
-            CallbackInfo ci) {
+    private static void getDetectiveTarget(TextRenderer renderer, ClientPlayerEntity player, DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         if (!gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DETECTIVE)) {
             DetectiveTarget = null;

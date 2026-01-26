@@ -8,8 +8,6 @@ import org.agmas.noellesroles.Noellesroles;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
-
 public class RolesHaveIncomeComponent {
 
     public static List<Role> getRoles() {
@@ -23,7 +21,7 @@ public class RolesHaveIncomeComponent {
         roles.add(KinsWathe.DRUGMAKER);
         roles.add(KinsWathe.LICENSED_VILLAIN);
         //添加NoellesRoles身份
-        if (NOELLESROLES_LOADED) {
+        if (KinsWathe.NOELLESROLES_LOADED) {
             roles.add(Noellesroles.JESTER);
             roles.add(Noellesroles.PHANTOM);
             roles.add(Noellesroles.SWAPPER);

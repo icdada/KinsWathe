@@ -8,7 +8,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
-import org.BsXinQin.kinswathe.KinsWatheConfig;
+import org.BsXinQin.kinswathe.KinsWathe;
 import org.agmas.noellesroles.ModItems;
 import org.agmas.noellesroles.Noellesroles;
 import org.spongepowered.asm.mixin.Final;
@@ -21,8 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
-
 @Mixin(LimitedInventoryScreen.class)
 public abstract class BartenderShopMixin extends LimitedHandledScreen<PlayerScreenHandler> {
 
@@ -32,15 +30,14 @@ public abstract class BartenderShopMixin extends LimitedHandledScreen<PlayerScre
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     void BartenderShop(CallbackInfo ci) {
-        if (!NOELLESROLES_LOADED) return;
-        if (!KinsWatheConfig.NoellesRolesModify) return;
+        if (!KinsWathe.NOELLESROLES_LOADED || !KinsWathe.EnableNoellesRolesModify()) return;
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         if (gameWorld.isRole(player,Noellesroles.BARTENDER)) {
             ci.cancel();
             super.init();
 
             List<ShopEntry> entries = new ArrayList<>();
-            entries.add(new ShopEntry(ModItems.DEFENSE_VIAL.getDefaultStack(), KinsWatheConfig.BartenderPriceModify, ShopEntry.Type.POISON));
+            entries.add(new ShopEntry(ModItems.DEFENSE_VIAL.getDefaultStack(), KinsWathe.BartenderPriceModify(), ShopEntry.Type.POISON));
             int apart = 36;
             int x = width / 2 - (entries.size()) * apart / 2 + 9;
             int shouldBeY = (((LimitedInventoryScreen)(Object)this).height - 32) / 2;

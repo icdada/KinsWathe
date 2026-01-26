@@ -2,6 +2,7 @@ package org.BsXinQin.kinswathe.client.mixin.roles.detective;
 
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.PlayerShopComponent;
+import dev.doctor4t.wathe.client.WatheClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -27,20 +28,22 @@ public abstract class DetectiveHudMixin {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(MinecraftClient.getInstance().player.getWorld());
         AbilityPlayerComponent ability = AbilityPlayerComponent.KEY.get(MinecraftClient.getInstance().player);
         PlayerShopComponent playerShop = PlayerShopComponent.KEY.get(MinecraftClient.getInstance().player);
-        if (gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DETECTIVE)) {
-            int drawY = context.getScaledWindowHeight();
+        if (WatheClient.isPlayerAliveAndInSurvival()) {
+            if (gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DETECTIVE)) {
+                int drawY = context.getScaledWindowHeight();
 
-            Text line = Text.translatable("tip.kinswathe.ability_can_use", KinsWatheClient.abilityBind.getBoundKeyLocalizedText());
+                Text line = Text.translatable("tip.kinswathe.ability_can_use", KinsWatheClient.abilityBind.getBoundKeyLocalizedText());
 
-            if (playerShop.balance < 200) {
-                line = Text.translatable("tip.kinswathe.detective.not_enough_money");
+                if (playerShop.balance < KinsWathe.DetectiveAbilityPrice()) {
+                    line = Text.translatable("tip.kinswathe.detective.not_enough_money", KinsWathe.DetectiveAbilityPrice());
+                }
+                if (ability.cooldown > 0) {
+                    line = Text.translatable("tip.kinswathe.cooldown", ability.cooldown / 20);
+                }
+
+                drawY -= getTextRenderer().getWrappedLinesHeight(line, 999999);
+                context.drawTextWithShadow(getTextRenderer(), line, context.getScaledWindowWidth() - getTextRenderer().getWidth(line), drawY, KinsWathe.DETECTIVE.color());
             }
-            if (ability.cooldown > 0) {
-                line = Text.translatable("tip.kinswathe.cooldown", ability.cooldown / 20);
-            }
-
-            drawY -= getTextRenderer().getWrappedLinesHeight(line, 999999);
-            context.drawTextWithShadow(getTextRenderer(), line, context.getScaledWindowWidth() - getTextRenderer().getWidth(line), drawY, KinsWathe.DETECTIVE.color());
         }
     }
 }

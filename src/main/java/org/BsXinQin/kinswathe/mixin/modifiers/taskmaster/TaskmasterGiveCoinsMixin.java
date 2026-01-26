@@ -15,8 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
-
 @Mixin(PlayerMoodComponent.class)
 public abstract class TaskmasterGiveCoinsMixin {
 
@@ -34,7 +32,7 @@ public abstract class TaskmasterGiveCoinsMixin {
                 if (modifier.isModifier(player, KinsWathe.TASKMASTER)) {
                     if (!gameWorld.isInnocent(player) &&
                         !KinsWathe.NEUTRAL_ROLES.contains(role) &&
-                        !(NOELLESROLES_LOADED && Noellesroles.KILLER_SIDED_NEUTRALS.contains(role))) {
+                        !(KinsWathe.NOELLESROLES_LOADED && Noellesroles.KILLER_SIDED_NEUTRALS.contains(role))) {
                         playerShop.addToBalance(50);} else{
                         playerShop.addToBalance(25);
                     }

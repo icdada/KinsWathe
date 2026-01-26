@@ -27,6 +27,8 @@
 
 - Add visual stamina bar display (configurable in config)
 
+- Jump and chat can be allowed when not in game (configurable in config)
+
 - Unlock 32 render distance limit when ultraPerfMode is disabled 
 
 - Switch player inventory to the last slot when game starts
@@ -74,12 +76,12 @@
 ## New Neutrals
 
 - Licensed Villain
-  - Only generates when 8 or more players are present
+  - Only generates when 10 or more players are present
   - Requires killing all players to win (has own victory screen)
   - Game does not end when all civilians or killers are dead
   - Has 15 seconds of sprint time
   - Initially equip with Lockpick
-  - Can purchase revolver in shop and have no backfire effect
+  - Can purchase Revolver in shop and have no backfire effect
 
 
 ## New Modifiers

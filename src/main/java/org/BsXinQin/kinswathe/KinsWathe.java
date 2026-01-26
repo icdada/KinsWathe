@@ -7,9 +7,11 @@ import dev.doctor4t.wathe.cca.*;
 import dev.doctor4t.wathe.game.GameConstants;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.index.WatheItems;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
@@ -166,8 +168,9 @@ public class KinsWathe implements ModInitializer {
     public static final ArrayList<Identifier> VANNILA_ROLE_IDS = new ArrayList<>();
     public static final ArrayList<Role> NEUTRAL_ROLES = new ArrayList<>();
 
-    /// 设置网络数据包
+    /// 设置数据包
     public static final CustomPayload.Id<AbilityC2SPacket> ABILITY_PACKET = AbilityC2SPacket.ID;
+    public static final CustomPayload.Id<ConfigSyncS2CPacket> CONFIG_SYNC_PACKET = ConfigSyncS2CPacket.ID;
 
     /// 初始化设置
     @Override
@@ -188,11 +191,14 @@ public class KinsWathe implements ModInitializer {
         //限制身份人数
         Harpymodloader.setRoleMaximum(LICENSED_VILLAIN, 1);
 
-        //初始化网络数据包
+        //初始化数据包
         PayloadTypeRegistry.playC2S().register(AbilityC2SPacket.ID, AbilityC2SPacket.CODEC);
+        PayloadTypeRegistry.playS2C().register(ConfigSyncS2CPacket.ID, ConfigSyncS2CPacket.CODEC);
 
         //初始化配置文件
         KinsWatheConfig.HANDLER.load();
+        setClientConfig();
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {sendConfigToClient(handler.player);});
 
         //初始化物品
         KinsWatheItems.setItemCooldown();
@@ -206,6 +212,62 @@ public class KinsWathe implements ModInitializer {
         registerPackets();
     }
 
+    /// 设置客户端Config
+    public static final Map<String, Integer> CLIENT_INT_CONFIGS = new HashMap<>();
+    public static final Map<String, Boolean> CLIENT_BOOL_CONFIGS = new HashMap<>();
+    //具体内容
+    public static final String StartingCooldown = "StartingCooldown";
+    public static final String EnableStaminaBar = "EnableStaminaBar";
+    public static final String EnableKeyNotInGame = "EnableKeyNotInGame";
+    public static final String BellringerAbilityPrice = "BellringerAbilityPrice";
+    public static final String DetectiveAbilityPrice = "DetectiveAbilityPrice";
+    public static final String CleanerAbilityPrice = "CleanerAbilityPrice";
+    public static final String LicensedVillainPrice = "LicensedVillainPrice";
+    public static final String EnableNoellesRolesModify = "EnableNoellesRolesModify";
+    public static final String BartenderPriceModify = "BartenderPriceModify";
+    public static final String RecallerAbilityModify = "RecallerAbilityModify";
+    //设置客户端默认配置
+    private static void setClientConfig() {
+        CLIENT_INT_CONFIGS.put(StartingCooldown, 30);
+        CLIENT_BOOL_CONFIGS.put(EnableStaminaBar, true);
+        CLIENT_BOOL_CONFIGS.put(EnableKeyNotInGame, true);
+        CLIENT_INT_CONFIGS.put(BellringerAbilityPrice, 200);
+        CLIENT_INT_CONFIGS.put(DetectiveAbilityPrice, 200);
+        CLIENT_INT_CONFIGS.put(CleanerAbilityPrice, 200);
+        CLIENT_INT_CONFIGS.put(LicensedVillainPrice, 300);
+        CLIENT_BOOL_CONFIGS.put(EnableNoellesRolesModify, true);
+        CLIENT_INT_CONFIGS.put(BartenderPriceModify, 150);
+        CLIENT_BOOL_CONFIGS.put(RecallerAbilityModify, true);
+    }
+    //发送配置给客户端
+    private void sendConfigToClient(ServerPlayerEntity player) {
+        Map<String, Integer> intConfigs = new HashMap<>();
+        Map<String, Boolean> boolConfigs = new HashMap<>();
+        KinsWatheConfig config = KinsWatheConfig.HANDLER.instance();
+        intConfigs.put(StartingCooldown, config.StartingCooldown);
+        boolConfigs.put(EnableStaminaBar, config.EnableStaminaBar);
+        boolConfigs.put(EnableKeyNotInGame, config.EnableKeyNotInGame);
+        intConfigs.put(BellringerAbilityPrice, config.BellringerAbilityPrice);
+        intConfigs.put(DetectiveAbilityPrice, config.DetectiveAbilityPrice);
+        intConfigs.put(CleanerAbilityPrice, config.CleanerAbilityPrice);
+        intConfigs.put(LicensedVillainPrice, config.LicensedVillainPrice);
+        boolConfigs.put(EnableNoellesRolesModify, config.EnableNoellesRolesModify);
+        intConfigs.put(BartenderPriceModify, config.BartenderPriceModify);
+        boolConfigs.put(RecallerAbilityModify, config.RecallerAbilityModify);
+        ServerPlayNetworking.send(player, new ConfigSyncS2CPacket(intConfigs, boolConfigs));
+    }
+    //设置配置接口
+    public static int StartingCooldown() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().StartingCooldown; else return CLIENT_INT_CONFIGS.getOrDefault(StartingCooldown, 30);}
+    public static boolean EnableStaminaBar() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().EnableStaminaBar; else return CLIENT_BOOL_CONFIGS.getOrDefault(EnableStaminaBar, true);}
+    public static boolean EnableKeyNotInGame() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().EnableKeyNotInGame; else return CLIENT_BOOL_CONFIGS.getOrDefault(EnableKeyNotInGame, true);}
+    public static int BellringerAbilityPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().BellringerAbilityPrice; else return CLIENT_INT_CONFIGS.getOrDefault(BellringerAbilityPrice, 200);}
+    public static int DetectiveAbilityPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().DetectiveAbilityPrice; else return CLIENT_INT_CONFIGS.getOrDefault(DetectiveAbilityPrice, 200);}
+    public static int CleanerAbilityPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().CleanerAbilityPrice; else return CLIENT_INT_CONFIGS.getOrDefault(CleanerAbilityPrice, 200);}
+    public static int LicensedVillainPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().LicensedVillainPrice; else return CLIENT_INT_CONFIGS.getOrDefault(LicensedVillainPrice, 300);}
+    public static boolean EnableNoellesRolesModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().EnableNoellesRolesModify; else return CLIENT_BOOL_CONFIGS.getOrDefault(EnableNoellesRolesModify, true);}
+    public static int BartenderPriceModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().BartenderPriceModify; else return CLIENT_INT_CONFIGS.getOrDefault(BartenderPriceModify, 150);}
+    public static boolean RecallerAbilityModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().RecallerAbilityModify; else return CLIENT_BOOL_CONFIGS.getOrDefault(RecallerAbilityModify, true);}
+
     /// 注册身份id
     public static Identifier id(String path) {return Identifier.of(MOD_ID, path);}
 
@@ -214,7 +276,7 @@ public class KinsWathe implements ModInitializer {
         //初始化身份(给予初始物品等)
         ModdedRoleAssigned.EVENT.register((player,role)->{
             AbilityPlayerComponent ability = AbilityPlayerComponent.KEY.get(player);
-            ability.cooldown = KinsWatheConfig.HANDLER.instance().StartingCooldown * 20;
+            ability.cooldown = StartingCooldown() * 20;
             //医师初始物品
             if (role.equals(PHYSICIAN)) {
                 player.giveItemStack(KinsWatheItems.MEDICAL_KIT.getDefaultStack());
@@ -228,9 +290,9 @@ public class KinsWathe implements ModInitializer {
                 player.giveItemStack(KinsWatheItems.SULFURIC_ACID_BARREL.getDefaultStack());
             }
         });
-        //限制身份数量
+        //限制身份生成人数
         ServerTickEvents.END_SERVER_TICK.register(((server) -> {
-            if (server.getPlayerManager().getCurrentPlayerCount() >= 8) {
+            if (server.getPlayerManager().getCurrentPlayerCount() >= 10) {
                 Harpymodloader.setRoleMaximum(LICENSED_VILLAIN,1);} else {
                 Harpymodloader.setRoleMaximum(LICENSED_VILLAIN,0);
             }
@@ -266,83 +328,90 @@ public class KinsWathe implements ModInitializer {
 
     /// 注册网络数据包
     public void registerPackets() {
-        //按键技能
+        /// 按键技能
         ServerPlayNetworking.registerGlobalReceiver(KinsWathe.ABILITY_PACKET, (payload, context) -> {
             ServerPlayerEntity player = context.player();
             ServerWorld world = player.getServerWorld();
             GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
             AbilityPlayerComponent ability = AbilityPlayerComponent.KEY.get(player);
             PlayerShopComponent playerShop = PlayerShopComponent.KEY.get(player);
-            //敲钟人技能
-            if (gameWorld.isRole(player, BELLRINGER) && ability.cooldown <= 0) {
-                GameTimeComponent time = GameTimeComponent.KEY.get(player.getWorld());
-                if (playerShop.balance < 200) return;
-                playerShop.balance -= 200;
-                playerShop.sync();
-                int currentTime = time.getTime();
-                int newTime = Math.max(0, currentTime - 1200);
-                time.setTime(newTime);
-                world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_BELL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                ability.cooldown = GameConstants.getInTicks(3, 0);
-                ability.sync();
-            }
-            //机器人技能
-            if (gameWorld.isRole(player, ROBOT) && ability.cooldown <= 0) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 200, 0, true, true, false));
-                world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_TOTEM_USE, SoundCategory.PLAYERS, 0.5f, 0.5f);
-                ability.cooldown = GameConstants.getInTicks(3, 0);
-                ability.sync();
-            }
-            //侦探技能
-            if (gameWorld.isRole(player, DETECTIVE) && ability.cooldown <= 0) {
-                ServerPlayerEntity targetPlayer = null;
-                if (playerShop.balance < 200) return;
-                HitResult targetHitResult = ProjectileUtil.getCollision(player, entity ->
-                entity instanceof ServerPlayerEntity target && target != player && GameFunctions.isPlayerAliveAndSurvival(target), 2.0f);
-                if (targetHitResult instanceof EntityHitResult entityHitResult) {
-                Entity entity = entityHitResult.getEntity();
-                if (entity instanceof ServerPlayerEntity) {
-                targetPlayer = (ServerPlayerEntity) entity;}}
-                Role targetRole = gameWorld.getRole(targetPlayer);
-                if (targetPlayer == null || targetRole == null) return;
-                playerShop.balance -= 200;
-                playerShop.sync();
-                if (targetRole.isInnocent()) {
-                player.sendMessage(Text.translatable("tip.kinswathe.detective.innocent",
-                targetPlayer.getName().getString()).withColor(WatheRoles.CIVILIAN.color()), true);
-                player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_YES, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                } else {
-                player.sendMessage(Text.translatable("tip.kinswathe.detective.notinnocent",
-                targetPlayer.getName().getString()).withColor(WatheRoles.KILLER.color()), true);
-                player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.PLAYERS, 1.0f, 1.0f);}
-                ability.cooldown = GameConstants.getInTicks(1, 30);
-                ability.sync();
-            }
-            //清道夫技能
-            if (gameWorld.isRole(player, CLEANER) && ability.cooldown <= 0) {
-                ServerCommandSource cleanDrops = player.getCommandSource().withLevel(4).withSilent();
-                if (playerShop.balance < 200) return;
-                playerShop.balance -= 200;
-                playerShop.sync();
-                try {Objects.requireNonNull(player.getServer()).getCommandManager().executeWithPrefix(cleanDrops, "kill @e[type=item]");
-                } catch (Exception ignored) {}
-                player.playSoundToPlayer(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                ability.cooldown = GameConstants.getInTicks(2, 30);
-                ability.sync();
+            if (GameFunctions.isPlayerAliveAndSurvival(player) && ability.cooldown <= 0) {
+                //敲钟人技能
+                if (gameWorld.isRole(player, BELLRINGER)) {
+                    GameTimeComponent time = GameTimeComponent.KEY.get(player.getWorld());
+                    if (playerShop.balance < KinsWathe.BellringerAbilityPrice()) return;
+                    playerShop.balance -= KinsWathe.BellringerAbilityPrice();
+                    playerShop.sync();
+                    int currentTime = time.getTime();
+                    int newTime = Math.max(0, currentTime - 1200);
+                    time.setTime(newTime);
+                    world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_BELL_USE, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    ability.cooldown = GameConstants.getInTicks(2, 0);
+                    ability.sync();
+                }
+                //机器人技能
+                if (gameWorld.isRole(player, ROBOT)) {
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 200, 0, true, true, false));
+                    world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_TOTEM_USE, SoundCategory.PLAYERS, 0.5f, 0.5f);
+                    ability.cooldown = GameConstants.getInTicks(2, 0);
+                    ability.sync();
+                }
+                //侦探技能
+                if (gameWorld.isRole(player, DETECTIVE)) {
+                    ServerPlayerEntity targetPlayer = null;
+                    if (playerShop.balance < KinsWathe.DetectiveAbilityPrice()) return;
+                    HitResult targetHitResult = ProjectileUtil.getCollision(player, entity -> entity instanceof ServerPlayerEntity target && target != player && GameFunctions.isPlayerAliveAndSurvival(target), 2.0f);
+                    if (targetHitResult instanceof EntityHitResult entityHitResult) {
+                        Entity entity = entityHitResult.getEntity();
+                        if (entity instanceof ServerPlayerEntity) {
+                            targetPlayer = (ServerPlayerEntity) entity;
+                        }
+                    }
+                    Role targetRole = gameWorld.getRole(targetPlayer);
+                    if (targetPlayer == null || targetRole == null) return;
+                    playerShop.balance -= KinsWathe.DetectiveAbilityPrice();
+                    playerShop.sync();
+                    if (targetRole.isInnocent()) {
+                        player.sendMessage(Text.translatable("tip.kinswathe.detective.innocent", targetPlayer.getName().getString()).withColor(WatheRoles.CIVILIAN.color()), true);
+                        player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_YES, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    } else {
+                        player.sendMessage(Text.translatable("tip.kinswathe.detective.notinnocent", targetPlayer.getName().getString()).withColor(WatheRoles.KILLER.color()), true);
+                        player.playSoundToPlayer(SoundEvents.ENTITY_VILLAGER_NO, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    }
+                    ability.cooldown = GameConstants.getInTicks(1, 30);
+                    ability.sync();
+                }
+                //清道夫技能
+                if (gameWorld.isRole(player, CLEANER)) {
+                    ServerCommandSource cleanDrops = player.getCommandSource().withLevel(4).withSilent();
+                    if (playerShop.balance < KinsWathe.CleanerAbilityPrice()) return;
+                    playerShop.balance -= KinsWathe.CleanerAbilityPrice();
+                    playerShop.sync();
+                    try {
+                        Objects.requireNonNull(player.getServer()).getCommandManager().executeWithPrefix(cleanDrops, "kill @e[type=item]");
+                    } catch (Exception ignored) {
+                    }
+                    player.playSoundToPlayer(SoundEvents.ENTITY_ENDER_DRAGON_FLAP, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                    ability.cooldown = GameConstants.getInTicks(2, 30);
+                    ability.sync();
+                }
             }
             /// 修改NoellesRoles技能
-            if (!NOELLESROLES_LOADED) return;
-            if (!KinsWatheConfig.NoellesRolesModify) return;
-            org.agmas.noellesroles.AbilityPlayerComponent noellesrolesAbility = org.agmas.noellesroles.AbilityPlayerComponent.KEY.get(player);
-            //修改回溯者技能
-            if (gameWorld.isRole(player, Noellesroles.RECALLER) && noellesrolesAbility.cooldown <= 0) {
-                if (!KinsWatheConfig.RecallerAbilityModify) return;
-                RecallerPlayerComponent recallerPlayerComponent = RecallerPlayerComponent.KEY.get(player);
-                if (!recallerPlayerComponent.placed) {
-                player.playSoundToPlayer(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                } else if (playerShop.balance >= 100) {
-                world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
-                world.spawnParticles(ParticleTypes.PORTAL, player.getX(), player.getY(), player.getZ(), 75, 0.5, 1.5, 0.5, 0.1);}
+            if (KinsWathe.NOELLESROLES_LOADED && KinsWathe.EnableNoellesRolesModify()) {
+                org.agmas.noellesroles.AbilityPlayerComponent noellesrolesAbility = org.agmas.noellesroles.AbilityPlayerComponent.KEY.get(player);
+                if (GameFunctions.isPlayerAliveAndSurvival(player) && ability.cooldown <= 0) {
+                    //修改回溯者技能
+                    if (gameWorld.isRole(player, Noellesroles.RECALLER)) {
+                        if (!KinsWathe.RecallerAbilityModify()) return;
+                        RecallerPlayerComponent recallerPlayerComponent = RecallerPlayerComponent.KEY.get(player);
+                        if (!recallerPlayerComponent.placed) {
+                            player.playSoundToPlayer(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        } else if (playerShop.balance >= 100) {
+                            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                            world.spawnParticles(ParticleTypes.PORTAL, player.getX(), player.getY(), player.getZ(), 75, 0.5, 1.5, 0.5, 0.1);
+                        }
+                    }
+                }
             }
         });
     }

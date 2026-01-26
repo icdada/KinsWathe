@@ -20,8 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.awt.*;
 
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
-
 @Mixin(WatheClient.class)
 public abstract class InstinctMixin {
 
@@ -73,7 +71,7 @@ public abstract class InstinctMixin {
                             ci.setReturnValue(WatheRoles.CIVILIAN.color());
                             ci.cancel();
                         }
-                        else if (NOELLESROLES_LOADED && Noellesroles.KILLER_SIDED_NEUTRALS.contains(role)) {
+                        else if (KinsWathe.NOELLESROLES_LOADED && Noellesroles.KILLER_SIDED_NEUTRALS.contains(role)) {
                             ci.setReturnValue(role.color());
                             ci.cancel();
                         }

@@ -15,15 +15,31 @@ public class KinsWatheConfig {
     public int StartingCooldown = GameConstants.getInTicks(0,30) / 20;
 
     @SerialEntry(comment = "Whether to enable staminabar.")
-    public static boolean EnableStaminaBar = true;
+    public boolean EnableStaminaBar = true;
+
+    @SerialEntry(comment = "Whether to enable key when not in game.")
+    public boolean EnableKeyNotInGame = true;
+
+    /// 关于KinsWathe修改
+    @SerialEntry(comment = "\n\n[Kin's Wathe] Modify:\nBellringer: modify the price of ability.")
+    public int BellringerAbilityPrice = 200;
+
+    @SerialEntry(comment = "Detective: modify the price of ability.")
+    public int DetectiveAbilityPrice = 200;
+
+    @SerialEntry(comment = "Cleaner: modify the price of ability.")
+    public int CleanerAbilityPrice = 200;
+
+    @SerialEntry(comment = "Licensed Villain: modify the price of Revolver in shop.")
+    public int LicensedVillainPrice = 300;
 
     /// 关于NoellesRoles修改
     @SerialEntry(comment = "\n\n[Noelle's Roles] Modify:\nWhether to enable Noelle's Roles modify.")
-    public static boolean NoellesRolesModify = true;
+    public boolean EnableNoellesRolesModify = true;
 
-    @SerialEntry(comment = "Bartender: modify the price of defense_vial in bartender's shop.")
-    public static int BartenderPriceModify = 150;
+    @SerialEntry(comment = "Bartender: modify the price of Defense Vial in shop.")
+    public int BartenderPriceModify = 150;
 
-    @SerialEntry(comment = "Recaller: whether to enable the special effects of recaller's ability.")
-    public static boolean RecallerAbilityModify = true;
+    @SerialEntry(comment = "Recaller: whether to enable the special effects of ability.")
+    public boolean RecallerAbilityModify = true;
 }

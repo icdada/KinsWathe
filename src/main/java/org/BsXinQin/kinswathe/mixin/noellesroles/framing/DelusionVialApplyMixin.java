@@ -12,6 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.BsXinQin.kinswathe.KinsWathe;
 import org.agmas.noellesroles.ModItems;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,8 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.UUID;
 
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
-
 @Mixin(FoodPlatterBlock.class)
 public abstract class DelusionVialApplyMixin {
 
@@ -30,7 +29,7 @@ public abstract class DelusionVialApplyMixin {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void DefenseVialApply(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit, CallbackInfoReturnable<ActionResult> ci) {
-        if (!NOELLESROLES_LOADED) return;
+        if (!KinsWathe.NOELLESROLES_LOADED) return;
         if (world.isClient) return;
         if (player.isCreative()) return;
         BlockEntity platter = world.getBlockEntity(pos);

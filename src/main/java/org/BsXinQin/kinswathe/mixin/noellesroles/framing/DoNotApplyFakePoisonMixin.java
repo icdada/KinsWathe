@@ -4,6 +4,7 @@ import dev.doctor4t.wathe.cca.PlayerPoisonComponent;
 import dev.doctor4t.wathe.game.GameFunctions;
 import dev.doctor4t.wathe.game.GameConstants;
 import net.minecraft.entity.player.PlayerEntity;
+import org.BsXinQin.kinswathe.KinsWathe;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,8 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
-
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
 
 @Mixin(PlayerPoisonComponent.class)
 public abstract class DoNotApplyFakePoisonMixin {
@@ -29,13 +28,13 @@ public abstract class DoNotApplyFakePoisonMixin {
 
     @Inject(method = "setPoisonTicks", at = @At("HEAD"))
     private void checkDelusionPoison(int ticks, UUID poisoner, CallbackInfo ci) {
-        if (!NOELLESROLES_LOADED) return;
+        if (!KinsWathe.NOELLESROLES_LOADED) return;
         this.isDelusionPoison = poisoner != null && poisoner.equals(DELUSION_MARKER);
     }
 
     @Inject(method = "serverTick", at = @At("HEAD"), cancellable = true)
     private void checkPoisonTicks(CallbackInfo ci) {
-        if (!NOELLESROLES_LOADED) return;
+        if (!KinsWathe.NOELLESROLES_LOADED) return;
         ci.cancel();
         if (this.poisonTicks > -1) {
             this.poisonTicks--;
@@ -56,7 +55,7 @@ public abstract class DoNotApplyFakePoisonMixin {
 
     @Inject(method = "reset", at = @At("HEAD"))
     private void clearDelusionFlag(CallbackInfo ci) {
-        if (!NOELLESROLES_LOADED) return;
+        if (!KinsWathe.NOELLESROLES_LOADED) return;
         this.isDelusionPoison = false;
     }
 }

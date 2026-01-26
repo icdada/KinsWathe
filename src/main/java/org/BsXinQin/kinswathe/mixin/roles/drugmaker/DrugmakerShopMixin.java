@@ -30,7 +30,7 @@ public abstract class DrugmakerShopMixin {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         if (gameWorld.isRole(player, KinsWathe.DRUGMAKER)) {
             if (index == 0) {
-                if (balance >= 200) {
+                if (balance >= 200 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.KNIFE)) {
                     this.balance -= 200;
                     sync();
                     player.giveItemStack(WatheItems.KNIFE.getDefaultStack());
@@ -50,7 +50,7 @@ public abstract class DrugmakerShopMixin {
                 ci.cancel();
             }
             if (index == 1) {
-                if (balance >= 300) {
+                if (balance >= 300 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.REVOLVER)) {
                     this.balance -= 300;
                     sync();
                     player.giveItemStack(WatheItems.REVOLVER.getDefaultStack());
@@ -149,7 +149,7 @@ public abstract class DrugmakerShopMixin {
                 }
                 ci.cancel();
             }
-            if (index == 6) {
+            if (index == 6 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.LOCKPICK)) {
                 if (balance >= 50) {
                     this.balance -= 50;
                     sync();
@@ -169,7 +169,7 @@ public abstract class DrugmakerShopMixin {
                 }
                 ci.cancel();
             }
-            if (index == 7) {
+            if (index == 7 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.CROWBAR)) {
                 if (balance >= 25) {
                     this.balance -= 25;
                     sync();
@@ -210,10 +210,10 @@ public abstract class DrugmakerShopMixin {
                 ci.cancel();
             }
             if (index == 9) {
-                if (balance >= 200) {
+                if (balance >= 200 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.BLACKOUT)) {
                     this.balance -= 200;
                     sync();
-                    player.giveItemStack(WatheItems.BLACKOUT.getDefaultStack());
+                    PlayerShopComponent.useBlackout(this.player);
                     PlayerEntity var6 = this.player;
                     if (var6 instanceof ServerPlayerEntity) {
                         ServerPlayerEntity player = (ServerPlayerEntity) var6;

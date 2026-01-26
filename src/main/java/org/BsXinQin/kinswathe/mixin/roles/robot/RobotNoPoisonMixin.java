@@ -12,17 +12,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerPoisonComponent.class)
-public abstract class RobotNoPoisonMixin {
+public class RobotNoPoisonMixin {
 
     @Shadow @Final private PlayerEntity player;
-    @Shadow public abstract void reset();
 
-    @Inject(method = "serverTick", at = @At("HEAD"), cancellable = true)
-    private void RobotNoPoison(CallbackInfo ci) {
-        GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
-        if (gameWorld.getRole(player) == null) return;
-        if (gameWorld.isRole(player, KinsWathe.ROBOT)) {
-            reset();
+    @Inject(method = "setPoisonTicks", at = @At("HEAD"), cancellable = true)
+    private void RobotNoPoison(int ticks, java.util.UUID poisoner, CallbackInfo ci) {
+        GameWorldComponent gameWorld = GameWorldComponent.KEY.get(this.player.getWorld());
+        if (gameWorld.isRole(this.player, KinsWathe.ROBOT)) {
             ci.cancel();
         }
     }

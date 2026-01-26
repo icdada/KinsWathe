@@ -2,6 +2,7 @@ package org.BsXinQin.kinswathe.client.mixin.gui;
 
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.cca.PlayerShopComponent;
+import dev.doctor4t.wathe.client.WatheClient;
 import dev.doctor4t.wathe.client.gui.StoreRenderer;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -21,13 +22,16 @@ public abstract class IncomeIconMixin {
     @Shadow public static StoreRenderer.MoneyNumberRenderer view;
 
     /// 添加非杀手收入功能
-    @Inject(method = "renderHud", at = @At("HEAD"))
+    @Inject(method = "renderHud", at = @At("HEAD"), cancellable = true)
     private static void IncomeIcon(TextRenderer renderer, ClientPlayerEntity player, DrawContext context, float delta, CallbackInfo ci) {
-        if (GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.BELLRINGER)
-        ||  GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.COOK)
-        ||  GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.DETECTIVE)
-        ||  GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.LICENSED_VILLAIN)
-        ) {
+        if (WatheClient.isPlayerSpectatingOrCreative()) {
+            ci.cancel();
+            return;
+        }
+        if (GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.BELLRINGER) ||
+            GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.COOK) ||
+            GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.DETECTIVE) ||
+            GameWorldComponent.KEY.get(player.getWorld()).isRole(player, KinsWathe.LICENSED_VILLAIN)) {
             int balance = PlayerShopComponent.KEY.get(player).balance;
             if (view.getTarget() != (float) balance) {
                 offsetDelta = (float) balance > view.getTarget() ? 0.6F : -0.6F;

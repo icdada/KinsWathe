@@ -9,7 +9,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import org.BsXinQin.kinswathe.KinsWatheConfig;
+import org.BsXinQin.kinswathe.KinsWathe;
 import org.agmas.noellesroles.ModItems;
 import org.agmas.noellesroles.Noellesroles;
 import org.spongepowered.asm.mixin.Final;
@@ -18,8 +18,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static org.BsXinQin.kinswathe.KinsWathe.NOELLESROLES_LOADED;
 
 @Mixin(PlayerShopComponent.class)
 public abstract class BartenderPlayerShopComponentMixin {
@@ -30,13 +28,12 @@ public abstract class BartenderPlayerShopComponentMixin {
 
     @Inject(method = "tryBuy", at = @At("HEAD"), cancellable = true)
     void BartenderBuy(int index, CallbackInfo ci) {
-        if (!NOELLESROLES_LOADED) return;
-        if (!KinsWatheConfig.NoellesRolesModify) return;
+        if (!KinsWathe.NOELLESROLES_LOADED || !KinsWathe.EnableNoellesRolesModify()) return;
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         if (gameWorld.isRole(player, Noellesroles.BARTENDER)) {
             if (index == 0) {
-                if (balance >= KinsWatheConfig.BartenderPriceModify) {
-                    this.balance -= KinsWatheConfig.BartenderPriceModify;
+                if (balance >= KinsWathe.BartenderPriceModify()) {
+                    this.balance -= KinsWathe.BartenderPriceModify();
                     sync();
                     player.giveItemStack(ModItems.DEFENSE_VIAL.getDefaultStack());
                     if (player instanceof ServerPlayerEntity serverPlayer) {
