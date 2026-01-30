@@ -19,7 +19,6 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import org.BsXinQin.kinswathe.KinsWathe;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -29,7 +28,7 @@ public class BlowgunItem extends Item {
     private static final Random random = new Random();
 
     @Override
-    public TypedActionResult<ItemStack> use(@NotNull World world, @NotNull PlayerEntity player, Hand hand) {
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
         if (player.getItemCooldownManager().isCoolingDown(this)) return TypedActionResult.fail(stack);
         world.playSound(null, player.getX(), player.getEyeY(), player.getZ(), SoundEvents.ENTITY_PUFFER_FISH_BLOW_OUT, SoundCategory.PLAYERS, 0.5f, 1.5f);

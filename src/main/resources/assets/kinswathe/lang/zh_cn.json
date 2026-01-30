@@ -38,6 +38,7 @@
   "announcement.win.kinswathe.licensed_villain": "执照恶棍胜利！",
   "game.win.kinswathe.licensed_villain": "执照恶棍终结了所有人的生命！",
 
+  "announcement.modifier.kinswathe.magnate": "富豪",
   "announcement.modifier.kinswathe.taskmaster": "任务大师",
 
   "item.kinswathe.blowgun": "吹矢",
@@ -45,6 +46,9 @@
 
   "item.kinswathe.medical_kit": "医疗箱",
   "item.kinswathe.medical_kit.tooltip": "用于玩家，可移除其中毒效果\n冷却 1 分钟",
+
+  "item.kinswathe.pan": "平底锅",
+  "item.kinswathe.pan.tooltip": "攻击可击退玩家\n冷却 15 秒",
 
   "item.kinswathe.poison_injector": "毒液注射器",
   "item.kinswathe.poison_injector.tooltip": "用于玩家，使其中毒\n如果目标已经中毒，则直接致死\n冷却 90 秒",

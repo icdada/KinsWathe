@@ -3,11 +3,14 @@ package org.BsXinQin.kinswathe.client.mixin.host;
 import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.api.WatheRoles;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
+import dev.doctor4t.wathe.cca.PlayerMoodComponent;
 import dev.doctor4t.wathe.cca.PlayerPoisonComponent;
 import dev.doctor4t.wathe.client.WatheClient;
+import dev.doctor4t.wathe.entity.PlayerBodyEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.BsXinQin.kinswathe.KinsWathe;
 import org.BsXinQin.kinswathe.roles.cook.CookPlayerEatComponent;
@@ -59,6 +62,7 @@ public abstract class InstinctMixin {
                     PlayerPoisonComponent targetPoison = PlayerPoisonComponent.KEY.get(target);
                     if (gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.PHYSICIAN) && targetPoison.poisonTicks > 0) {
                         UUID poisoner = targetPoison.poisoner;
+                        if (poisoner == null) return;
                         if (KinsWathe.NOELLESROLES_LOADED) {
                             PlayerEntity poisonerPlayer = MinecraftClient.getInstance().player.getWorld().getPlayerByUuid(poisoner);
                             if (poisoner.equals(DELUSION_MARKER)) return;
@@ -72,6 +76,7 @@ public abstract class InstinctMixin {
                     PlayerPoisonComponent targetPoison = PlayerPoisonComponent.KEY.get(target);
                     if (gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DRUGMAKER) && targetPoison.poisonTicks > 0) {
                         UUID poisoner = targetPoison.poisoner;
+                        if (poisoner == null) return;
                         if (KinsWathe.NOELLESROLES_LOADED) {
                             PlayerEntity poisonerPlayer = MinecraftClient.getInstance().player.getWorld().getPlayerByUuid(poisoner);
                             if (poisoner.equals(DELUSION_MARKER)) return;
@@ -100,6 +105,25 @@ public abstract class InstinctMixin {
                                 ci.cancel();
                             }
                         }
+                    }
+                }
+            }
+            /// 修改NoellesRoles透视
+            if (!KinsWathe.NOELLESROLES_LOADED || !KinsWathe.EnableNoellesRolesModify()) return;
+            if (target instanceof ItemEntity) {
+                //修改列车长透视
+                if (KinsWathe.ConductorInstinctModify() && gameWorld.isRole(MinecraftClient.getInstance().player, Noellesroles.CONDUCTOR)) {
+                    ci.setReturnValue(0xDB9D00);
+                    ci.cancel();
+                }
+            }
+            if (target instanceof PlayerBodyEntity) {
+                //修改验尸官透视
+                if (KinsWathe.CoronerInstinctModify() && gameWorld.isRole(MinecraftClient.getInstance().player, Noellesroles.CORONER)) {
+                    PlayerMoodComponent playerMood = PlayerMoodComponent.KEY.get(MinecraftClient.getInstance().player);
+                    if (!playerMood.isLowerThanMid()) {
+                    ci.setReturnValue(0x606060);
+                    ci.cancel();
                     }
                 }
             }

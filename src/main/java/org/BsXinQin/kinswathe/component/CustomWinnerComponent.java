@@ -24,7 +24,7 @@ import java.util.UUID;
 
 public class CustomWinnerComponent implements AutoSyncedComponent {
 
-    public static final ComponentKey<CustomWinnerComponent> KEY = ComponentRegistryV3.INSTANCE.getOrCreate(KinsWathe.id("custom_winner"), CustomWinnerComponent.class);
+    public static final ComponentKey<CustomWinnerComponent> KEY = ComponentRegistryV3.INSTANCE.getOrCreate(KinsWathe.id("custom"), CustomWinnerComponent.class);
     private final World world;
 
     @Getter @Setter private String winningTextId = null;

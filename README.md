@@ -18,6 +18,8 @@
 - New Additions
   - Add item cooldown display text
   - Add new visual effects for some roles (configurable in config)
+  - Conductor can see dropped items (disabled by default)
+  - Coroner can see bodies when mood is higher than mid (disabled by default)
 
 - Balance Modifications
   - Adjust Bartender's Defense Vial price (configurable in config)
@@ -28,7 +30,7 @@
 
 - Add visual stamina bar display (configurable in config)
 
-- Jump and chat can be allowed when not in game (configurable in config)
+- Jump can be allowed when not in game (configurable in config)
 
 - Unlock 32 render distance limit when ultraPerfMode is disabled 
 
@@ -52,6 +54,7 @@
 
 - Physician
   - Can see poisoned players through walls
+  - Has 15 seconds of sprint time
   - Initially equip with Medical Kit
   - Medical Kit can use on a player to remove poison (1 minute cooldown)
 
@@ -71,7 +74,7 @@
 
 - Drugmaker
   - Can see poisoned players through walls
-  - Get coins if someone was poisoned
+  - Get coins if someone was poisoned (configurable in config)
   - Can not purchase Grenade and Psycho Mode in shop
   - Price of Poison Vial and Scorpion reduced by half
   - Can purchase Poison Injector and Blowgun in shop

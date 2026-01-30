@@ -49,11 +49,7 @@ public class DetectiveTargetHudMixin {
     @Inject(method = "renderHud", at = @At(value = "INVOKE", target = "Ldev/doctor4t/wathe/game/GameFunctions;isPlayerSpectatingOrCreative(Lnet/minecraft/entity/player/PlayerEntity;)Z"))
     private static void getDetectiveTarget(TextRenderer renderer, ClientPlayerEntity player, DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
-        if (!gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DETECTIVE)) {
-            DetectiveTarget = null;
-            return;
-        }
-        if (WatheClient.isPlayerSpectatingOrCreative() || !WatheClient.isPlayerAliveAndInSurvival()) {
+        if (!WatheClient.isPlayerAliveAndInSurvival() || !gameWorld.isRole(MinecraftClient.getInstance().player, KinsWathe.DETECTIVE)) {
             DetectiveTarget = null;
             return;
         }
@@ -62,8 +58,8 @@ public class DetectiveTargetHudMixin {
             return entity instanceof PlayerEntity target && target != player;
         }, (double) range);
         DetectiveTarget = null;
-        if (hitResult instanceof EntityHitResult ehr) {
-            var entity = ehr.getEntity();
+        if (hitResult instanceof EntityHitResult entityHit) {
+            var entity = entityHit.getEntity();
             if (entity instanceof PlayerEntity targetPlayer) {
                 DetectiveTarget = targetPlayer;
             }

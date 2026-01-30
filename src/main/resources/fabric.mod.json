@@ -27,7 +27,7 @@
     "cardinal-components": [
       "kinswathe:ability",
       "kinswathe:config",
-      "kinswathe:custom_winner",
+      "kinswathe:custom",
       "kinswathe:cook"
     ]
   },

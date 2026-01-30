@@ -8,27 +8,21 @@ import org.agmas.noellesroles.Noellesroles;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RolesHaveIncomeComponent {
+public class RolesPassiveIncomeComponent {
 
-    public static List<Role> RolesHaveIncome() {
+    public static List<Role> RolesPassiveIncome() {
         List<Role> roles = new ArrayList<>();
         //添加基础身份
         roles.add(WatheRoles.KILLER);
-        roles.add(KinsWathe.BELLRINGER);
         roles.add(KinsWathe.COOK);
-        roles.add(KinsWathe.DETECTIVE);
         roles.add(KinsWathe.CLEANER);
         roles.add(KinsWathe.DRUGMAKER);
-        roles.add(KinsWathe.LICENSED_VILLAIN);
         //添加NoellesRoles身份
         if (KinsWathe.NOELLESROLES_LOADED) {
             roles.add(Noellesroles.MIMIC);
             roles.add(Noellesroles.JESTER);
             roles.add(Noellesroles.PHANTOM);
             roles.add(Noellesroles.SWAPPER);
-            roles.add(Noellesroles.TRAPPER);
-            roles.add(Noellesroles.RECALLER);
-            roles.add(Noellesroles.BARTENDER);
             roles.add(Noellesroles.MORPHLING);
             roles.add(Noellesroles.NOISEMAKER);
             roles.add(Noellesroles.EXECUTIONER);

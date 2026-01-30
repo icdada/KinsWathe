@@ -13,9 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class PassiveIncomeMixin {
 
     @WrapOperation(method = "tickServerGameLoop", at = @At(value = "INVOKE", target = "Ldev/doctor4t/wathe/cca/GameWorldComponent;canUseKillerFeatures(Lnet/minecraft/entity/player/PlayerEntity;)Z"))
-    public boolean PassiveIncome(GameWorldComponent instance, PlayerEntity player, Operation<Boolean> original) {
-        if (instance.isRole(player, KinsWathe.COOK)) return true;
-        return original.call(instance,player);
+    public boolean PassiveIncome(GameWorldComponent gameWorld, PlayerEntity player, Operation<Boolean> original) {
+        if (gameWorld.isRole(player, KinsWathe.COOK)) return true;
+        return original.call(gameWorld,player);
     }
-
 }

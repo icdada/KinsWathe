@@ -31,6 +31,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import org.BsXinQin.kinswathe.component.AbilityPlayerComponent;
 import org.BsXinQin.kinswathe.component.RolesHaveIncomeComponent;
+import org.BsXinQin.kinswathe.component.RolesPassiveIncomeComponent;
 import org.agmas.harpymodloader.Harpymodloader;
 import org.agmas.harpymodloader.events.ModdedRoleAssigned;
 import org.BsXinQin.kinswathe.packet.*;
@@ -45,7 +46,7 @@ public class KinsWathe implements ModInitializer {
 
     public static String MOD_ID = "kinswathe";
 
-    /// 获取noellesroles注册前置
+    /// 获取前置模组注册
     public static boolean NOELLESROLES_LOADED = FabricLoader.getInstance().isModLoaded("noellesroles");
 
     /// 设置游戏开始和结束功能
@@ -66,6 +67,7 @@ public class KinsWathe implements ModInitializer {
     //中立
     public static Identifier LICENSED_VILLAIN_ID = Identifier.of(MOD_ID, "licensed_villain");
     //定义词条
+    public static Identifier MAGNATE_ID = Identifier.of(MOD_ID, "magnate");
     public static Identifier TASKMASTER_ID = Identifier.of(MOD_ID, "taskmaster");
 
     /// 新增身份词条
@@ -107,7 +109,7 @@ public class KinsWathe implements ModInitializer {
             true,
             false,
             Role.MoodType.REAL,
-            WatheRoles.CIVILIAN.getMaxSprintTime(),
+            300,
             false
     ));
     //机器人
@@ -153,12 +155,21 @@ public class KinsWathe implements ModInitializer {
             false
     ));
     //新增词条
+    //富豪
+    public static Modifier MAGNATE = HMLModifiers.registerModifier(new Modifier(
+            MAGNATE_ID,
+            0xFFFF00,
+            null,
+            new ArrayList<>(RolesPassiveIncomeComponent.RolesPassiveIncome()),
+            false,
+            false
+    ));
     //任务大师
     public static Modifier TASKMASTER = HMLModifiers.registerModifier(new Modifier(
             TASKMASTER_ID,
             0xFF3399,
             null,
-            new ArrayList<>(RolesHaveIncomeComponent.getRoles()),
+            new ArrayList<>(RolesHaveIncomeComponent.RolesHaveIncome()),
             false,
             false
     ));
@@ -218,26 +229,32 @@ public class KinsWathe implements ModInitializer {
     //具体内容
     public static final String StartingCooldown = "StartingCooldown";
     public static final String EnableStaminaBar = "EnableStaminaBar";
-    public static final String EnableKeyNotInGame = "EnableKeyNotInGame";
+    public static final String EnableJumpNotInGame = "EnableJumpNotInGame";
     public static final String BellringerAbilityPrice = "BellringerAbilityPrice";
     public static final String DetectiveAbilityPrice = "DetectiveAbilityPrice";
     public static final String CleanerAbilityPrice = "CleanerAbilityPrice";
+    public static final String DrugmakerGetCoins = "DrugmakerGetCoins";
     public static final String LicensedVillainPrice = "LicensedVillainPrice";
     public static final String EnableNoellesRolesModify = "EnableNoellesRolesModify";
     public static final String BartenderPriceModify = "BartenderPriceModify";
+    public static final String ConductorInstinctModify = "ConductorInstinctModify";
+    public static final String CoronerInstinctModify = "CoronerInstinctModify";
     public static final String RecallerAbilityModify = "RecallerAbilityModify";
     public static final String TrapperPriceModify = "BartenderPriceModify";
     //设置客户端默认配置
     private static void setClientConfig() {
         CLIENT_INT_CONFIGS.put(StartingCooldown, 30);
         CLIENT_BOOL_CONFIGS.put(EnableStaminaBar, true);
-        CLIENT_BOOL_CONFIGS.put(EnableKeyNotInGame, true);
+        CLIENT_BOOL_CONFIGS.put(EnableJumpNotInGame, true);
         CLIENT_INT_CONFIGS.put(BellringerAbilityPrice, 200);
         CLIENT_INT_CONFIGS.put(DetectiveAbilityPrice, 200);
         CLIENT_INT_CONFIGS.put(CleanerAbilityPrice, 200);
+        CLIENT_INT_CONFIGS.put(DrugmakerGetCoins, 50);
         CLIENT_INT_CONFIGS.put(LicensedVillainPrice, 300);
         CLIENT_BOOL_CONFIGS.put(EnableNoellesRolesModify, true);
         CLIENT_INT_CONFIGS.put(BartenderPriceModify, 150);
+        CLIENT_BOOL_CONFIGS.put(ConductorInstinctModify, false);
+        CLIENT_BOOL_CONFIGS.put(CoronerInstinctModify, false);
         CLIENT_BOOL_CONFIGS.put(RecallerAbilityModify, true);
         CLIENT_INT_CONFIGS.put(TrapperPriceModify, 200);
     }
@@ -248,13 +265,16 @@ public class KinsWathe implements ModInitializer {
         KinsWatheConfig config = KinsWatheConfig.HANDLER.instance();
         intConfigs.put(StartingCooldown, config.StartingCooldown);
         boolConfigs.put(EnableStaminaBar, config.EnableStaminaBar);
-        boolConfigs.put(EnableKeyNotInGame, config.EnableKeyNotInGame);
+        boolConfigs.put(EnableJumpNotInGame, config.EnableJumpNotInGame);
         intConfigs.put(BellringerAbilityPrice, config.BellringerAbilityPrice);
         intConfigs.put(DetectiveAbilityPrice, config.DetectiveAbilityPrice);
         intConfigs.put(CleanerAbilityPrice, config.CleanerAbilityPrice);
+        intConfigs.put(DrugmakerGetCoins, config.DrugmakerGetCoins);
         intConfigs.put(LicensedVillainPrice, config.LicensedVillainPrice);
         boolConfigs.put(EnableNoellesRolesModify, config.EnableNoellesRolesModify);
         intConfigs.put(BartenderPriceModify, config.BartenderPriceModify);
+        boolConfigs.put(ConductorInstinctModify, config.ConductorInstinctModify);
+        boolConfigs.put(CoronerInstinctModify, config.CoronerInstinctModify);
         boolConfigs.put(RecallerAbilityModify, config.RecallerAbilityModify);
         intConfigs.put(TrapperPriceModify, config.TrapperPriceModify);
         ServerPlayNetworking.send(player, new ConfigSyncS2CPacket(intConfigs, boolConfigs));
@@ -262,13 +282,16 @@ public class KinsWathe implements ModInitializer {
     //设置配置接口
     public static int StartingCooldown() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().StartingCooldown; else return CLIENT_INT_CONFIGS.getOrDefault(StartingCooldown, 30);}
     public static boolean EnableStaminaBar() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().EnableStaminaBar; else return CLIENT_BOOL_CONFIGS.getOrDefault(EnableStaminaBar, true);}
-    public static boolean EnableKeyNotInGame() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().EnableKeyNotInGame; else return CLIENT_BOOL_CONFIGS.getOrDefault(EnableKeyNotInGame, true);}
+    public static boolean EnableJumpNotInGame() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().EnableJumpNotInGame; else return CLIENT_BOOL_CONFIGS.getOrDefault(EnableJumpNotInGame, true);}
     public static int BellringerAbilityPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().BellringerAbilityPrice; else return CLIENT_INT_CONFIGS.getOrDefault(BellringerAbilityPrice, 200);}
     public static int DetectiveAbilityPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().DetectiveAbilityPrice; else return CLIENT_INT_CONFIGS.getOrDefault(DetectiveAbilityPrice, 200);}
     public static int CleanerAbilityPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().CleanerAbilityPrice; else return CLIENT_INT_CONFIGS.getOrDefault(CleanerAbilityPrice, 200);}
+    public static int DrugmakerGetCoins() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().DrugmakerGetCoins; else return CLIENT_INT_CONFIGS.getOrDefault(DrugmakerGetCoins, 50);}
     public static int LicensedVillainPrice() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().LicensedVillainPrice; else return CLIENT_INT_CONFIGS.getOrDefault(LicensedVillainPrice, 300);}
     public static boolean EnableNoellesRolesModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().EnableNoellesRolesModify; else return CLIENT_BOOL_CONFIGS.getOrDefault(EnableNoellesRolesModify, true);}
     public static int BartenderPriceModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().BartenderPriceModify; else return CLIENT_INT_CONFIGS.getOrDefault(BartenderPriceModify, 150);}
+    public static boolean ConductorInstinctModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().ConductorInstinctModify; else return CLIENT_BOOL_CONFIGS.getOrDefault(ConductorInstinctModify, false);}
+    public static boolean CoronerInstinctModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().CoronerInstinctModify; else return CLIENT_BOOL_CONFIGS.getOrDefault(CoronerInstinctModify, false);}
     public static boolean RecallerAbilityModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().RecallerAbilityModify; else return CLIENT_BOOL_CONFIGS.getOrDefault(RecallerAbilityModify, true);}
     public static int TrapperPriceModify() {if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) return KinsWatheConfig.HANDLER.instance().TrapperPriceModify; else return CLIENT_INT_CONFIGS.getOrDefault(TrapperPriceModify, 200);}
 

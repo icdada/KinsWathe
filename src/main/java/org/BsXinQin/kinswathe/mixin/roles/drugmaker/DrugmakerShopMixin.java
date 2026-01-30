@@ -150,8 +150,8 @@ public abstract class DrugmakerShopMixin {
                 }
                 ci.cancel();
             }
-            if (index == 6 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.LOCKPICK)) {
-                if (balance >= 50) {
+            if (index == 6) {
+                if (balance >= 50 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.LOCKPICK)) {
                     this.balance -= 50;
                     sync();
                     player.giveItemStack(WatheItems.LOCKPICK.getDefaultStack());
@@ -170,8 +170,8 @@ public abstract class DrugmakerShopMixin {
                 }
                 ci.cancel();
             }
-            if (index == 7 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.CROWBAR)) {
-                if (balance >= 25) {
+            if (index == 7) {
+                if (balance >= 25 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.CROWBAR)) {
                     this.balance -= 25;
                     sync();
                     player.giveItemStack(WatheItems.CROWBAR.getDefaultStack());
@@ -191,7 +191,7 @@ public abstract class DrugmakerShopMixin {
                 ci.cancel();
             }
             if (index == 8) {
-                if (balance >= 200) {
+                if (balance >= 200 && !this.player.getItemCooldownManager().isCoolingDown(WatheItems.BODY_BAG)) {
                     this.balance -= 200;
                     sync();
                     player.giveItemStack(WatheItems.BODY_BAG.getDefaultStack());

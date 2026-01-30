@@ -32,9 +32,9 @@ public abstract class CookShopMixin extends LimitedHandledScreen<PlayerScreenHan
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         if (gameWorld.isRole(player, KinsWathe.COOK)) {
             List<ShopEntry> entries = new ArrayList<>();
-            entries.add(new ShopEntry(Items.COOKED_PORKCHOP.getDefaultStack(), 100, ShopEntry.Type.POISON));
-            entries.add(new ShopEntry(Items.COOKED_BEEF.getDefaultStack(), 100, ShopEntry.Type.POISON));
-            entries.add(new ShopEntry(Items.COOKED_CHICKEN.getDefaultStack(), 100, ShopEntry.Type.POISON));
+            entries.add(new ShopEntry(Items.COOKED_PORKCHOP.getDefaultStack(), 75, ShopEntry.Type.POISON));
+            entries.add(new ShopEntry(Items.COOKED_BEEF.getDefaultStack(), 75, ShopEntry.Type.POISON));
+            entries.add(new ShopEntry(Items.COOKED_CHICKEN.getDefaultStack(), 75, ShopEntry.Type.POISON));
             int apart = 36;
             int x = width / 2 - (entries.size()) * apart / 2 + 9;
             int shouldBeY = (height - 32) / 2;

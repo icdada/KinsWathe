@@ -17,8 +17,8 @@ public class KinsWatheConfig {
     @SerialEntry(comment = "Whether to enable staminabar.")
     public boolean EnableStaminaBar = true;
 
-    @SerialEntry(comment = "Whether to enable key when not in game.")
-    public boolean EnableKeyNotInGame = true;
+    @SerialEntry(comment = "Whether to enable jump when not in game.")
+    public boolean EnableJumpNotInGame = true;
 
     /// 关于KinsWathe修改
     @SerialEntry(comment = "\n\n[Kin's Wathe] Modify:\nBellringer: modify the price of ability.")
@@ -30,6 +30,9 @@ public class KinsWatheConfig {
     @SerialEntry(comment = "Cleaner: modify the price of ability.")
     public int CleanerAbilityPrice = 200;
 
+    @SerialEntry(comment = "Drugmaker: modify get coins when someone was poisoned.")
+    public int DrugmakerGetCoins = 50;
+
     @SerialEntry(comment = "Licensed Villain: modify the price of Revolver in shop.")
     public int LicensedVillainPrice = 300;
 
@@ -39,6 +42,12 @@ public class KinsWatheConfig {
 
     @SerialEntry(comment = "Bartender: modify the price of Defense Vial in shop.")
     public int BartenderPriceModify = 150;
+
+    @SerialEntry(comment = "Conductor: whether to enable instinct of seeing dropped items.")
+    public boolean ConductorInstinctModify = false;
+
+    @SerialEntry(comment = "Coroner: whether to enable instinct of seeing player bodies.")
+    public boolean CoronerInstinctModify = false;
 
     @SerialEntry(comment = "Recaller: whether to enable the special effects of ability.")
     public boolean RecallerAbilityModify = true;

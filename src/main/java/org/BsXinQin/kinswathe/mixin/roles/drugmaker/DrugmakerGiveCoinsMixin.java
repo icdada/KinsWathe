@@ -41,7 +41,7 @@ public abstract class DrugmakerGiveCoinsMixin {
             if (gameWorld.isRole(onlinePlayer, KinsWathe.DRUGMAKER)) {
                 PlayerShopComponent playerShop = PlayerShopComponent.KEY.get(onlinePlayer);
                 onlinePlayer.sendMessage(Text.translatable("tip.kinswathe.drugmaker.posioned").withColor(KinsWathe.DRUGMAKER.color()), true);
-                playerShop.addToBalance(50);
+                playerShop.addToBalance(KinsWathe.DrugmakerGetCoins());
                 playerShop.sync();
             }
         }

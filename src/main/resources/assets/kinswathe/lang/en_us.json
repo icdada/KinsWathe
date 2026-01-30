@@ -38,6 +38,7 @@
   "announcement.win.kinswathe.licensed_villain": "Licensed Villain Win!",
   "game.win.kinswathe.licensed_villain": "The licensed villain ended everyone's life!",
 
+  "announcement.modifier.kinswathe.magnate": "Magnate",
   "announcement.modifier.kinswathe.taskmaster": "Taskmaster",
 
   "item.kinswathe.blowgun": "Blowgun",
@@ -45,6 +46,9 @@
 
   "item.kinswathe.medical_kit": "Medical Kit",
   "item.kinswathe.medical_kit.tooltip": "Use on a player to remove poison\n1 minute cooldown",
+
+  "item.kinswathe.pan": "Pan",
+  "item.kinswathe.pan.tooltip": "Attack to knock back / push a player\n15 seconds cooldown",
 
   "item.kinswathe.poison_injector": "Poison Injector",
   "item.kinswathe.poison_injector.tooltip": "Use on a player to poison it\nIf target have been poisoned, directly cause death\n90 seconds cooldown",

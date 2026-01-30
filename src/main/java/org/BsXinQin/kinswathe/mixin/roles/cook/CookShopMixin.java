@@ -10,7 +10,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.BsXinQin.kinswathe.KinsWathe;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,8 +30,8 @@ public abstract class CookShopMixin {
         GameWorldComponent gameWorld = GameWorldComponent.KEY.get(player.getWorld());
         if (gameWorld.isRole(player, KinsWathe.COOK)) {
             if (index == 0) {
-                if (balance >= 100) {
-                    this.balance -= 100;
+                if (balance >= 75) {
+                    this.balance -= 75;
                     sync();
                     player.giveItemStack(Items.COOKED_PORKCHOP.getDefaultStack());
                     PlayerEntity var6 = this.player;
@@ -51,8 +50,8 @@ public abstract class CookShopMixin {
                 ci.cancel();
             }
             if (index == 1) {
-                if (balance >= 100) {
-                    this.balance -= 100;
+                if (balance >= 75) {
+                    this.balance -= 75;
                     sync();
                     player.giveItemStack(Items.COOKED_BEEF.getDefaultStack());
                     PlayerEntity var6 = this.player;
@@ -71,8 +70,8 @@ public abstract class CookShopMixin {
                 ci.cancel();
             }
             if (index == 2) {
-                if (balance >= 100) {
-                    this.balance -= 100;
+                if (balance >= 75) {
+                    this.balance -= 75;
                     sync();
                     player.giveItemStack(Items.COOKED_CHICKEN.getDefaultStack());
                     PlayerEntity var6 = this.player;

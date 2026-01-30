@@ -109,12 +109,14 @@ public class KinsWatheClient implements ClientModInitializer {
             }
             //添加物品提示
             CooldownText(KinsWatheItems.BLOWGUN, list, itemStack);
-            ToolTip(KinsWatheItems.BLOWGUN, itemStack, list);
             CooldownText(KinsWatheItems.MEDICAL_KIT, list, itemStack);
-            ToolTip(KinsWatheItems.MEDICAL_KIT, itemStack, list);
+            CooldownText(KinsWatheItems.PAN, list, itemStack);
             CooldownText(KinsWatheItems.POISON_INJECTOR, list, itemStack);
-            ToolTip(KinsWatheItems.POISON_INJECTOR, itemStack, list);
             CooldownText(KinsWatheItems.SULFURIC_ACID_BARREL, list, itemStack);
+            ToolTip(KinsWatheItems.BLOWGUN, itemStack, list);
+            ToolTip(KinsWatheItems.MEDICAL_KIT, itemStack, list);
+            ToolTip(KinsWatheItems.PAN, itemStack, list);
+            ToolTip(KinsWatheItems.POISON_INJECTOR, itemStack, list);
             ToolTip(KinsWatheItems.SULFURIC_ACID_BARREL, itemStack, list);
         }));
     }
